@@ -412,6 +412,8 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
 .livegrid{display:grid;grid-template-columns:1.55fr 1fr;gap:22px;align-items:start}
 .livecol{display:flex;flex-direction:column;gap:22px;min-width:0}
 .livetbl td{vertical-align:middle}
+.livetbl{width:100%}.livetbl td,.livetbl th{padding:8px 8px}.livetbl td:last-child{white-space:normal;min-width:90px}.livetbl td:last-child .flag{display:inline-block;margin:2px 4px 2px 0}
+.livetbl .tleft{width:46px}
 .livetbl .delta{font-family:var(--mono);font-size:.8rem;color:var(--ecto);margin-left:6px}
 .roomchip{font-family:var(--type);font-size:.8rem;padding:1px 8px;border:1px solid #3c4a5a;color:var(--paper);white-space:nowrap}
 .roomchip.map{color:var(--sky);border-style:dashed}
@@ -505,6 +507,34 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   @keyframes jolt{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
 }
+
+
+/* ---------- läsbarhet: små etiketter ---------- */
+.chip{font-family:var(--mono);font-weight:600;font-size:.76rem;letter-spacing:.02em;color:var(--ice);border-color:rgba(140,164,188,.6);padding:.15em .6em}
+.chip.adv{color:#ffc58f;background:rgba(212,80,26,.18)}
+.chip.ok{color:#d4f0b0;background:rgba(155,191,106,.18)}
+.chip.bad{color:#ffd0c9;background:rgba(122,30,30,.35)}
+.chip.ai{color:#ece5ff;background:rgba(157,123,255,.25)}
+.task.mat:not(:has(.console)):not(:has(#pyin)) .chip{background:rgba(19,32,47,.08)}
+.flag{font-family:var(--mono);font-weight:600;font-size:.78rem;padding:2px 8px;border-width:1px}
+.flag.warn{background:var(--blood);color:#ffe1dc;border-color:#c4473a}
+.flag.ai{background:rgba(157,123,255,.3);color:#efe9ff;border-color:var(--violet)}
+.roomchip{font-family:var(--mono);font-weight:600;font-size:.8rem;padding:2px 9px;background:#1c2c3f;color:var(--paper);border-color:#4a5d73}
+.roomchip.results{background:var(--pumpkin);color:#fff7ec;border-color:#5e230a}
+.roomchip.map{background:transparent;color:#c3d1de;border-color:var(--sky)}
+.pill{font-family:var(--mono);font-weight:600;font-size:.78rem;padding:.12em .6em}
+.pill.live{background:rgba(155,191,106,.2);color:#d9f2bb;border-color:var(--ecto)}
+.pill.done{background:rgba(212,80,26,.28);color:#ffd8b4;border-color:var(--pumpkin)}
+.admtbl th{font-family:var(--mono);font-weight:600;font-size:.76rem;letter-spacing:.02em}
+.admtbl td{color:var(--ice)}
+.admtbl td.muted,.admtbl .muted{color:#b3c0cd}
+.hud .stat span{font-family:var(--mono);font-size:.68rem;color:#a7b6c6}
+.livekpis span,.statsrow span{font-size:.88rem;color:#bccad7}
+.zonelabel{font-size:.86rem}
+.hardrow small,.liverooms div small{color:#b3c0cd}
+.syncdot{font-size:.78rem}
+.tcol{font-size:.8rem}
+.relrow .ends .mono{color:#b9c8d6}
 
 /* ---------- responsive ---------- */
 @media (min-width:1600px){body{font-size:20px}.wrap{max-width:1360px}.hud-in{max-width:1360px}}
@@ -1566,7 +1596,7 @@ function answerInput(id){const s=T(id);if(s.done||locked()||s.until>Date.now())r
     document.getElementById("task-"+id).querySelector(".pts").textContent=net(id)+" / "+taskMax(id)+" p";}}
 function clickCell(tid,cell,el){const s=T(tid);if(locked())return;s.cells=s.cells||[];s.notes=s.notes||[];s.misses=s.misses||[];if(s.cells.includes(cell))return;
   const hit=ANS.clk[tid][H(tid+":"+cell)];
-  if(hit){if(s.found.includes(hit.i)){toast("Det spöket är redan fångat.");return;}
+  if(hit){if(s.found.includes(hit.i)){s.cells.push(cell);commit();toast(tid==="ark"?"Samma spöke som ni redan fångat, bara en annan cell.":"Det är samma förvrängning som ni redan hittat.");return;}
     s.found.push(hit.i);s.cells.push(cell);s.earned+=ANS.cnt[tid][hit.i];s.notes.push(dec(hit.x,tid+":"+cell));
     if(s.found.length===ANS.cnt[tid].length){s.done=true;s.ok=true;}
     toast((tid==="ark"?"Spöke fångat! +":"Förvrängning krossad! +")+ANS.cnt[tid][hit.i]+" p");commit();}
