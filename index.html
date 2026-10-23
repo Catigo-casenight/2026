@@ -417,6 +417,8 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
 .cmpradar text{font-family:var(--type);fill:var(--sky)}
 .teamnav{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .teamnav select{width:auto;min-width:220px}
+.btn.ghost.admdel{border-color:rgba(224,103,90,.6);color:var(--blood-text)}
+.btn.ghost.admdel:hover{background:rgba(122,30,30,.25);color:#ffb3a8;border-color:var(--blood-text)}
 .teamhead{display:flex;flex-direction:column;gap:6px}
 
 /* results */
@@ -1578,16 +1580,16 @@ function radar(pcts){const W=420,cx=210,cy=200,R=140,n=pcts.length;const pt=(i,r
 
 /* ---------- admin ---------- */
 const ADM={teams:{},sel:null,timer:null,tab:"board"};
-function admLoadLocal(){try{const v=JSON.parse(sessionStorage.getItem("catigo-adm")||"{}");if(v.url)document.getElementById("admurl").value=v.url;if(v.key)document.getElementById("admkey").value=v.key;}catch(e){}
+function admLoadLocal(){try{ADM.deleted=JSON.parse(localStorage.getItem("catigo-adm-deleted")||"{}");}catch(e){ADM.deleted={};}try{const v=JSON.parse(sessionStorage.getItem("catigo-adm")||"{}");if(v.url)document.getElementById("admurl").value=v.url;if(v.key)document.getElementById("admkey").value=v.key;}catch(e){}
   try{const c=JSON.parse(localStorage.getItem("catigo-adm-codes")||"{}");Object.values(c).forEach(admMerge);}catch(e){}}
-function admMerge(p){if(!p||!p.teamId)return;const cur=ADM.teams[p.teamId];if(!cur||(p.ts||0)>=(cur.ts||0))ADM.teams[p.teamId]=p;}
+function admMerge(p){if(!p||!p.teamId)return;if(ADM.deleted&&ADM.deleted[p.teamId])return;const cur=ADM.teams[p.teamId];if(!cur||(p.ts||0)>=(cur.ts||0))ADM.teams[p.teamId]=p;}
 async function admFetch(){const url=document.getElementById("admurl").value.trim(),key=document.getElementById("admkey").value;const st=document.getElementById("admstatus");
   if(!url||!key){st.textContent="Ange både URL och nyckel.";return;}
   try{sessionStorage.setItem("catigo-adm",JSON.stringify({url,key}));}catch(e){}
   st.textContent="Hämtar…";
   try{const r=await fetch(url+(url.includes("?")?"&":"?")+"key="+encodeURIComponent(key));const d=await r.json();
     if(!Array.isArray(d)){st.textContent="Servern svarade: "+(d&&d.error?d.error:"oväntat format")+". Kontrollera nyckeln.";return;}
-    d.forEach(admMerge);const t=new Date();st.textContent=`Hämtat ${d.length} lag ${String(t.getHours()).padStart(2,"0")}:${String(t.getMinutes()).padStart(2,"0")}:${String(t.getSeconds()).padStart(2,"0")}.`;admRender();}
+    Object.keys(ADM.teams).forEach(k=>{if(ADM.teams[k]._srv)delete ADM.teams[k];});d.forEach(x=>{x._srv=1;admMerge(x);});const t=new Date();st.textContent=`Hämtat ${d.length} lag ${String(t.getHours()).padStart(2,"0")}:${String(t.getMinutes()).padStart(2,"0")}:${String(t.getSeconds()).padStart(2,"0")}.`;admRender();}
   catch(e){st.textContent="Kunde inte hämta: "+(e.message||e)+". Är URL:en rätt och webbappen delad med ”Alla”? (I Claude-förhandsvisningen blockeras externa anrop; använd GitHub Pages-versionen.)";}}
 function admList(){return Object.values(ADM.teams).sort((a,b)=>b.total-a.total||a.ts-b.ts);}
 function admPcts(p){return ROOMS.map(r=>({r,p:Math.max(0,Math.min(1,((p.areas||{})[r.id]||0)/100))}));}
@@ -1624,7 +1626,7 @@ function admRender(){const list=admList();const now=Date.now();
   if(!p){det.innerHTML=`<p class="muted" style="font-size:1.05rem">Välj ett lag i topplistan eller under Jämför lag.</p>`;return;}
   const idx=list.findIndex(x=>x.teamId===p.teamId);const pc=admPcts(p);const pr=admProfile(p);const T_=Object.values(p.tasks||{});
   const mins=Math.round(Math.min(p.dur*60000,(p.ts-p.start))/60000);const wr=T_.reduce((a,t)=>a+(t.w||0),0);const hints=T_.filter(t=>t.h).length;
-  const nav=`<div class="teamnav"><button type="button" class="btn ghost small" id="admprev" ${idx<=0?"disabled":""}>← Föregående</button><select id="admpick" aria-label="Välj lag">${list.map((x,i)=>`<option value="${esc(x.teamId)}" ${x.teamId===p.teamId?"selected":""}>#${i+1} ${esc(x.team)}</option>`).join("")}</select><button type="button" class="btn ghost small" id="admnext" ${idx>=list.length-1?"disabled":""}>Nästa →</button><span style="flex:1"></span><button type="button" class="btn ghost small" id="admtocmp">Till Jämför lag</button></div>`;
+  const nav=`<div class="teamnav"><button type="button" class="btn ghost small" id="admprev" ${idx<=0?"disabled":""}>← Föregående</button><select id="admpick" aria-label="Välj lag">${list.map((x,i)=>`<option value="${esc(x.teamId)}" ${x.teamId===p.teamId?"selected":""}>#${i+1} ${esc(x.team)}</option>`).join("")}</select><button type="button" class="btn ghost small" id="admnext" ${idx>=list.length-1?"disabled":""}>Nästa →</button><span style="flex:1"></span><button type="button" class="btn ghost small" id="admtocmp">Till Jämför lag</button><button type="button" class="btn ghost small admdel" id="admdel">Ta bort laget</button></div>`;
   const trows=keys.filter(k=>(p.tasks||{})[k]).map(k=>{const t=p.tasks[k],TT=TASKS[k];let ans=t.a?esc(t.a):t.p&&TT.opts?esc(TT.opts[t.p]||t.p):t.f?t.f+" hittade":t.s?esc(t.s):"";
     return `<tr><td>${esc(ROOMS.find(r=>r.id===TT.room).name)}</td><td>${esc(TT.title)}</td><td class="mono">${t.n} / ${t.m}</td><td>${t.ok?"✓":t.d?"✗":"…"}${t.j?" · AI-joker":""}${t.h?" · ledtråd":""}${t.w?` · ${t.w} fel`:""}</td><td style="white-space:normal;min-width:260px;max-width:460px">${ans}</td></tr>`;}).join("");
   det.innerHTML=`${nav}
@@ -1639,7 +1641,17 @@ function admRender(){const list=admList();const now=Date.now();
   const go_=d=>{const n=list[idx+d];if(n)admOpen(n.teamId);};
   document.getElementById("admprev").onclick=()=>go_(-1);document.getElementById("admnext").onclick=()=>go_(1);
   document.getElementById("admpick").onchange=e=>admOpen(e.target.value);
-  document.getElementById("admtocmp").onclick=()=>{ADM.tab="compare";admRender();};}
+  document.getElementById("admtocmp").onclick=()=>{ADM.tab="compare";admRender();};
+  const del=document.getElementById("admdel");let armed=false;
+  del.onclick=()=>{if(!armed){armed=true;del.textContent=`Ta bort ”${p.team}” för gott? Klicka igen`;setTimeout(()=>{if(del.isConnected){armed=false;del.textContent="Ta bort laget";}},4000);return;}admDelete(p);};}
+async function admDelete(p){const url=document.getElementById("admurl").value.trim(),key=document.getElementById("admkey").value;
+  delete ADM.teams[p.teamId];ADM.deleted=ADM.deleted||{};ADM.deleted[p.teamId]=1;
+  try{const st=JSON.parse(localStorage.getItem("catigo-adm-codes")||"{}");delete st[p.teamId];localStorage.setItem("catigo-adm-codes",JSON.stringify(st));}catch(e){}
+  try{const dl=JSON.parse(localStorage.getItem("catigo-adm-deleted")||"{}");dl[p.teamId]=1;localStorage.setItem("catigo-adm-deleted",JSON.stringify(dl));}catch(e){}
+  ADM.sel=null;ADM.tab="board";admRender();
+  if(url&&key){try{await fetch(url,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"delete",key,teamId:p.teamId,team:p.team})});toast(`”${p.team}” är borttaget.`);setTimeout(admFetch,2000);}
+    catch(e){toast("Kunde inte nå servern. Laget är dolt här men finns kvar i kalkylarket.");}}
+  else toast(`”${p.team}” är borttaget från listan.`);}
 function admInit(){admLoadLocal();admRender();
   document.querySelectorAll("#admtabs [data-admtab]").forEach(b=>b.onclick=()=>{ADM.tab=b.dataset.admtab;admRender();});
   document.getElementById("admform").onsubmit=e=>{e.preventDefault();admFetch();};
@@ -1648,7 +1660,7 @@ function admInit(){admLoadLocal();admRender();
   document.getElementById("admaddcodes").onclick=()=>{const ta=document.getElementById("admcodes");let ok=0,bad=0;let store={};try{store=JSON.parse(localStorage.getItem("catigo-adm-codes")||"{}");}catch(e){}
     ta.value.split(/\s+/).filter(Boolean).forEach(c=>{const p=parseCode(c);if(p){admMerge(p);store[p.teamId]=p;ok++;}else bad++;});
     try{localStorage.setItem("catigo-adm-codes",JSON.stringify(store));}catch(e){}ta.value="";toast(`${ok} koder tillagda`+(bad?`, ${bad} ogiltiga`:""));admRender();};
-  let clr=false;document.getElementById("admclear").onclick=e=>{if(!clr){clr=true;e.target.textContent="Säkert? Klicka igen";setTimeout(()=>{clr=false;e.target.textContent="Rensa listan";},3000);return;}ADM.teams={};try{localStorage.removeItem("catigo-adm-codes");}catch(_){}admRender();e.target.textContent="Rensa listan";clr=false;};}
+  let clr=false;document.getElementById("admclear").onclick=e=>{if(!clr){clr=true;e.target.textContent="Säkert? Klicka igen";setTimeout(()=>{clr=false;e.target.textContent="Rensa listan";},3000);return;}ADM.teams={};ADM.deleted={};try{localStorage.removeItem("catigo-adm-codes");localStorage.removeItem("catigo-adm-deleted");}catch(_){}admRender();e.target.textContent="Rensa listan";clr=false;};}
 function route(){if(location.hash==="#admin"){if(!ADM.inited){ADM.inited=true;document.getElementById("admurl").value=document.getElementById("admurl").value||CONFIG.resultsUrl;admInit();}show("admin");if(document.getElementById("admkey").value&&document.getElementById("admurl").value)admFetch();return true;}return false;}
 window.addEventListener("hashchange",()=>{if(!route()&&current==="admin"){S?go():show("start");}});
 
