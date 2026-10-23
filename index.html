@@ -396,6 +396,29 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
 .syncdot.ok{color:var(--ecto)}.syncdot.bad{color:var(--blood-text)}
 .codebox{font-family:var(--mono);font-size:.76rem;word-break:break-all;background:#030507;border:2px solid #000;outline:1px solid #2b3a4b;border-radius:0;padding:10px;max-height:110px;overflow:auto;color:#ffd3a1}
 
+
+/* admin: flikar, jämförelse, lagdetalj */
+.admtabs{display:flex;gap:4px;border-bottom:2px solid var(--pumpkin);flex-wrap:wrap}
+.admtabs button{font-family:var(--type);font-size:1rem;letter-spacing:.03em;padding:.55em 1.2em .45em;background:linear-gradient(180deg,#152130,#0c141e);border:1px solid #2b3a4b;border-bottom:0;color:var(--sky);border-radius:0;clip-path:polygon(6% 0,94% 0,100% 100%,0 100%)}
+.admtabs button:hover{color:var(--smoothie)}
+.admtabs button[aria-selected="true"]{background:var(--pumpkin);color:#fff7ec;border-color:var(--pumpkin)}
+.admpane{display:flex;flex-direction:column;gap:22px}
+.cmpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.cmpcard{text-align:left;position:relative;display:flex;flex-direction:column;gap:6px;padding:16px 16px 12px;border-radius:2px;background:radial-gradient(ellipse 40% 30% at 92% 0%,rgba(122,61,20,.3),transparent 70%),linear-gradient(180deg,#152130,#0c141e);border:1px solid #2b3a4b;border-top-color:#3c4e63;box-shadow:inset 0 0 0 4px #0a1018,inset 0 0 0 5px #223040,0 10px 22px rgba(0,0,0,.45);transition:transform .15s,box-shadow .2s;min-width:0}
+.cmpcard:hover,.cmpcard:focus-visible{transform:translateY(-3px);box-shadow:inset 0 0 0 4px #0a1018,inset 0 0 0 5px #7a3d14,0 0 30px rgba(247,125,25,.2),0 12px 26px rgba(0,0,0,.5)}
+.cmpcard .rank{position:absolute;top:12px;right:14px;font-family:var(--type);font-size:1.05rem;color:var(--smoothie);border:2px solid var(--pumpkin);padding:0 7px;transform:rotate(5deg)}
+.cmpcard .rank.r1{background:var(--pumpkin);color:#fff7ec}
+.cmpcard .nm{font-family:var(--heading);font-size:1.35rem;color:var(--sand);padding-right:48px;overflow-wrap:anywhere;line-height:1.15}
+.cmpcard .tot{font-family:var(--display);font-size:3rem;line-height:.9;color:var(--mandarin);text-shadow:0 0 18px rgba(247,125,25,.4)}
+.cmpcard .tot small{font-family:var(--type);font-size:.32em;color:var(--sky);text-shadow:none}
+.cmpcard .prof{font-family:var(--type);font-size:.82rem;color:var(--ink);background:var(--paper);background-image:var(--noise-paper);padding:1px 8px;align-self:flex-start}
+.cmpcard svg{width:100%;height:auto;display:block;margin-top:2px}
+.cmpcard .foot{display:flex;justify-content:space-between;align-items:center;gap:8px;white-space:nowrap;flex-wrap:wrap;font-family:var(--mono);font-size:.78rem;color:var(--muted);border-top:1px dashed rgba(140,164,188,.25);padding-top:8px}
+.cmpradar text{font-family:var(--type);fill:var(--sky)}
+.teamnav{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.teamnav select{width:auto;min-width:220px}
+.teamhead{display:flex;flex-direction:column;gap:6px}
+
 /* results */
 .resgrid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;margin-top:24px}
 .total{font-family:var(--display);font-size:clamp(5rem,15vw,10rem);line-height:.85;color:var(--mandarin);font-variant-numeric:tabular-nums;text-shadow:0 0 30px rgba(247,125,25,.45),0 0 2px rgba(255,176,102,.9)}
@@ -666,9 +689,17 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
       <label style="display:flex;gap:8px;align-items:center;margin:0 0 .7em"><input type="checkbox" id="admauto" checked> Auto 15 s</label>
     </form>
     <p class="mono muted" id="admstatus" style="font-size:.82rem">Ange URL och nyckel och tryck Hämta. Lag som inte kunde skicka kan klistra in sin resultatkod nedan.</p>
-    <div class="scroll" id="admboard"></div>
-    <div id="admdetail"></div>
-    <div class="task"><div class="taskhead"><span class="chip">Matris</span><h3>Uppgifter per lag</h3></div><p class="muted" style="font-size:.88rem">Grön = löst, röd = stängd eller fel, orange = påbörjad, lila ring = kristallkulan. Siffran är nettopoäng.</p><div class="scroll" id="admmatrix"></div></div>
+    <nav class="admtabs" id="admtabs" role="tablist">
+      <button type="button" role="tab" data-admtab="board">Topplista</button>
+      <button type="button" role="tab" data-admtab="compare">Jämför lag</button>
+      <button type="button" role="tab" data-admtab="team">Lagdetalj</button>
+    </nav>
+    <div id="admtab-board" class="admpane">
+      <div class="scroll" id="admboard"></div>
+      <div class="task" style="margin-top:22px"><div class="taskhead"><span class="chip">Matris</span><h3>Uppgifter per lag</h3></div><p class="muted" style="font-size:.95rem">Grön = löst, röd = stängd eller fel, orange = påbörjad, lila ring = kristallkulan. Siffran är nettopoäng.</p><div class="scroll" id="admmatrix"></div></div>
+    </div>
+    <div id="admtab-compare" class="admpane" hidden><div class="cmpgrid" id="admcompare"></div></div>
+    <div id="admtab-team" class="admpane" hidden><div id="admdetail"></div></div>
     <div class="task"><div class="taskhead"><span class="chip">Reserv</span><h3>Klistra in resultatkoder</h3></div><textarea id="admcodes" rows="4" placeholder="En eller flera koder, en per rad"></textarea><div class="answerrow"><button class="btn ghost" id="admaddcodes" type="button">Lägg till koder</button><button class="btn ghost small" id="admclear" type="button">Rensa listan</button></div></div>
   </div>
 </section>
@@ -1110,7 +1141,7 @@ function tick(){if(!S)return;const left=Math.max(0,timeLeft());
 
 /* ---------- views ---------- */
 let current="start", currentRoom=null;
-function show(v){["start","map","room","results","admin"].forEach(x=>document.getElementById("v-"+x).hidden=(x!==v));document.getElementById("hud").hidden=(v==="start"||v==="admin");syncUI();document.getElementById("endbtn").hidden=(v==="results");current=v;window.scrollTo(0,0);hud();}
+function show(v){["start","map","room","results","admin"].forEach(x=>document.getElementById("v-"+x).hidden=(x!==v));document.getElementById("hud").hidden=(v==="start"||v==="admin");syncUI();document.getElementById("endbtn").hidden=(v==="results");current=v;window.scrollTo(0,0);hud();if(v==="room"&&currentRoom==="biblioteket")requestAnimationFrame(()=>requestAnimationFrame(drawRels));}
 function hud(){if(!S)return;document.getElementById("hud-team").textContent=S.team;document.getElementById("hud-score").textContent=total();
   document.getElementById("hud-ball").classList.toggle("used",!!S.joker);
   document.getElementById("hud-balltxt").textContent=S.joker?("Använd: "+TASKS[S.joker].title):"Kristallkulan redo";}
@@ -1160,7 +1191,7 @@ function mcqHTML(id){const t=TASKS[id],s=T(id);const keys=Object.keys(t.opts);
     return `<button class="${c}" data-mcq="${id}" data-opt="${k}" type="button" ${s.done||locked()?"disabled":""}><span class="k">${"ABCD"[i]}</span><span>${esc(t.opts[k])}</span></button>`;}).join("")}</div>`;}
 function inputHTML(id){const t=TASKS[id],s=T(id);const cool=s.until>Date.now();
   if(s.done)return `<p class="q">${esc(t.q)}</p><p class="mono" style="color:var(--ok)">Svar: ${esc(s.answer||"")}</p>`;
-  return `<p class="q">${esc(t.q)}</p><form class="answerrow" data-form="${id}"><input type="text" id="in-${id}" data-coolctl="${id}" placeholder="${esc(t.ph)}" ${cool||locked()?"disabled":""} autocomplete="off"><button class="btn" data-coolctl="${id}" type="submit" ${cool||locked()?"disabled":""}>Svara</button></form>`;}
+  return `<p class="q">${esc(t.q)}</p><form class="answerrow" data-form="${id}"><input type="text" id="in-${id}" data-coolctl="${id}" data-draft="${id}" value="${esc((S.drafts||{})[id]||"")}" placeholder="${esc(t.ph)}" ${cool||locked()?"disabled":""} autocomplete="off"><button class="btn" data-coolctl="${id}" type="submit" ${cool||locked()?"disabled":""}>Svara</button></form>`;}
 
 /* ---------- arkivet ---------- */
 function ghosts(id,label){const s=T(id);const n=ANS.cnt[id].length;let g='<div class="ghostcount">';for(let i=0;i<n;i++)g+=`<svg class="g${s.found.includes(i)?" got":""}" aria-hidden="true"><use href="#ghost"/></svg>`;return g+`<span class="mono muted" style="margin-left:6px">${s.found.length} / ${n} ${label}</span></div>`;}
@@ -1191,7 +1222,7 @@ function modelHTML(){const s=T("bib_model");const lk=s.done||locked();const occ=
   <div class="grave" data-zone="grav"><span class="zonelabel">Kyrkogården · R.I.P.</span>${grave.map(card).join("")}</div>
   <div class="rellist"><span class="zonelabel">Relationer (${s.rels.length})</span>${rels||'<p class="muted" style="font-size:.9rem">Inga relationer än. Dra från en kolumn till en annan i modellen.</p>'}</div>
   ${s.done?`<p class="mono" style="color:var(--smoothie)">${s.summary||""}</p>`:`<div><button class="btn" id="lockmodel" type="button" ${!allPlaced||!allCard||locked()?"disabled":""}>Lås modellen</button> <span class="muted" style="font-size:.85rem">${!allPlaced?"Placera alla tabeller först.":!allCard?"Ange kardinalitet för alla relationer.":""}</span></div>`}`;}
-function drawRels(){const svg=document.getElementById("relsvg");if(!svg)return;const cv=document.getElementById("mcanvas");const s=T("bib_model");const cr=cv.getBoundingClientRect();
+function drawRels(){const svg=document.getElementById("relsvg");if(!svg)return;const cv=document.getElementById("mcanvas");if(!cv.offsetParent)return;const s=T("bib_model");const cr=cv.getBoundingClientRect();
   let out=`<defs><marker id="dot" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="6" markerHeight="6"><circle cx="3" cy="3" r="2.5" fill="#F77D19"/></marker></defs>`;
   s.rels.forEach((r,i)=>{const ea=cv.querySelector(`[data-col="${CSS.escape(r.a)}"]`),eb=cv.querySelector(`[data-col="${CSS.escape(r.b)}"]`);if(!ea||!eb)return;
     const A=ea.getBoundingClientRect(),B=eb.getBoundingClientRect();
@@ -1236,6 +1267,8 @@ function endDrag(e){if(!drag)return;const s=T("bib_model");const d=drag;drag=nul
     if(!tg)return;const to=tg.dataset.col;if(to.split(".")[0]===d.from.split(".")[0])return;
     if(s.rels.some(r=>(r.a===d.from&&r.b===to)||(r.a===to&&r.b===d.from))){toast("Den relationen finns redan.");return;}
     s.rels.push({a:d.from,b:to,card:""});save();commitModel();toast("Relation skapad. Ange kardinaliteten i listan under modellen.");}}
+let relT=null;const redrawRels=()=>{if(current==="room"&&currentRoom==="biblioteket"){clearTimeout(relT);relT=setTimeout(drawRels,60);}};
+window.addEventListener("resize",redrawRels);try{document.fonts&&document.fonts.ready.then(redrawRels);document.fonts&&document.fonts.addEventListener&&document.fonts.addEventListener("loadingdone",redrawRels);}catch(e){}
 document.addEventListener("pointermove",moveDrag);document.addEventListener("pointerup",endDrag);
 function commitModel(){const mw=document.getElementById("modelwrap");const sl=mw?mw.scrollLeft:0;commit();const mw2=document.getElementById("modelwrap");if(mw2)mw2.scrollLeft=sl;}
 function canonRel(r){let a=r.a,b=r.b,c=r.card;if(a>b){[a,b]=[b,a];const p=c.split(" : ");c=p[1]+" : "+p[0];}return "rel:"+a+"|"+b+"|"+c;}
@@ -1449,6 +1482,7 @@ function bindRoom(){const body=document.getElementById("room-body");
     else{b.dataset.armed="1";b.textContent="Säkert? Klicka igen för att använda kulan";setTimeout(()=>{if(b.isConnected&&!S.joker){delete b.dataset.armed;b.innerHTML='<svg width="16" height="16" aria-hidden="true"><use href="#crystal"/></svg> Använd kristallkulan (−2 p)';}},3500);}});
   body.querySelectorAll("[data-mcq]").forEach(b=>b.onclick=()=>answerMCQ(b.dataset.mcq,b.dataset.opt));
   body.querySelectorAll("[data-form]").forEach(f=>f.onsubmit=e=>{e.preventDefault();answerInput(f.dataset.form);});
+  body.querySelectorAll("[data-draft]").forEach(inp=>inp.addEventListener("input",()=>{S.drafts=S.drafts||{};S.drafts[inp.dataset.draft]=inp.value;try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}));
   body.querySelectorAll("[data-cell]").forEach(b=>b.onclick=()=>clickCell("ark",b.dataset.cell,b.parentElement));
   body.querySelectorAll("[data-hs]").forEach(g=>{const [tid,hid]=g.dataset.hs.split("|");const f=()=>clickCell(tid,hid,g);g.addEventListener("click",f);g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();f();}});});
   body.querySelectorAll("[data-step]").forEach(b=>b.onclick=()=>{const s=T("pan_order");if(s.done||locked())return;const k=b.dataset.step;const i=s.seq.indexOf(k);if(i>=0)s.seq.splice(i,1);else s.seq.push(k);commit();});
@@ -1456,7 +1490,8 @@ function bindRoom(){const body=document.getElementById("room-body");
   const ro=document.getElementById("resetorder");if(ro)ro.onclick=()=>{T("pan_order").seq=[];commit();};
   if(currentRoom==="biblioteket")bindModel();
 }
-function commit(){save();const y=window.scrollY;renderRoom();hud();window.scrollTo(0,y);}
+function commit(){save();const y=window.scrollY;const ae=document.activeElement;const fid=ae&&ae.id&&/^(in-|sqlin$|pyin$)/.test(ae.id)?ae.id:null;const sel=fid&&ae.selectionStart!=null?[ae.selectionStart,ae.selectionEnd]:null;
+  renderRoom();hud();window.scrollTo(0,y);if(fid){const el=document.getElementById(fid);if(el&&!el.disabled){el.focus({preventScroll:true});if(sel)try{el.setSelectionRange(sel[0],sel[1]);}catch(e){}}}}
 function feedback(id,msg,ok){const el=document.getElementById("fb-"+id);if(el){el.textContent=msg;el.className="feedback "+(ok?"ok":"bad");}}
 
 function answerMCQ(id,opt){const s=T(id);if(s.done||locked())return;const a=ANS.mcq[id];s.pick=opt;s.done=true;
@@ -1542,7 +1577,7 @@ function radar(pcts){const W=420,cx=210,cy=200,R=140,n=pcts.length;const pt=(i,r
   return s+"</svg>";}
 
 /* ---------- admin ---------- */
-const ADM={teams:{},sel:null,timer:null};
+const ADM={teams:{},sel:null,timer:null,tab:"board"};
 function admLoadLocal(){try{const v=JSON.parse(sessionStorage.getItem("catigo-adm")||"{}");if(v.url)document.getElementById("admurl").value=v.url;if(v.key)document.getElementById("admkey").value=v.key;}catch(e){}
   try{const c=JSON.parse(localStorage.getItem("catigo-adm-codes")||"{}");Object.values(c).forEach(admMerge);}catch(e){}}
 function admMerge(p){if(!p||!p.teamId)return;const cur=ADM.teams[p.teamId];if(!cur||(p.ts||0)>=(cur.ts||0))ADM.teams[p.teamId]=p;}
@@ -1554,24 +1589,59 @@ async function admFetch(){const url=document.getElementById("admurl").value.trim
     if(!Array.isArray(d)){st.textContent="Servern svarade: "+(d&&d.error?d.error:"oväntat format")+". Kontrollera nyckeln.";return;}
     d.forEach(admMerge);const t=new Date();st.textContent=`Hämtat ${d.length} lag ${String(t.getHours()).padStart(2,"0")}:${String(t.getMinutes()).padStart(2,"0")}:${String(t.getSeconds()).padStart(2,"0")}.`;admRender();}
   catch(e){st.textContent="Kunde inte hämta: "+(e.message||e)+". Är URL:en rätt och webbappen delad med ”Alla”? (I Claude-förhandsvisningen blockeras externa anrop; använd GitHub Pages-versionen.)";}}
-function admRender(){const list=Object.values(ADM.teams).sort((a,b)=>b.total-a.total||a.ts-b.ts);
-  const now=Date.now();
-  const rows=list.map((p,i)=>{const solved=Object.values(p.tasks||{}).filter(t=>t.ok).length;const hints=Object.values(p.tasks||{}).filter(t=>t.h).length;const wr=Object.values(p.tasks||{}).reduce((a,t)=>a+(t.w||0),0);
+function admList(){return Object.values(ADM.teams).sort((a,b)=>b.total-a.total||a.ts-b.ts);}
+function admPcts(p){return ROOMS.map(r=>({r,p:Math.max(0,Math.min(1,((p.areas||{})[r.id]||0)/100))}));}
+function admProfile(p){const pc=admPcts(p);const best=pc.slice().sort((a,b)=>b.p-a.p)[0];if(!best||best.p===0)return ["Nyinflyttade spöken","Laget har inte fångat några spöken än."];const pr=PROFILES[best.r.id];return [pr[0]+(p.total/p.max>=0.75?" · Mästerjägare":""),pr[1]];}
+function admRadar(pc,opt){opt=opt||{};const cx=210,cy=200,R=opt.labels===false?170:140,n=pc.length,fs=opt.fs||12;const pt=(i,r)=>{const a=-Math.PI/2+i*2*Math.PI/n;return [cx+Math.cos(a)*r,cy+Math.sin(a)*r];};
+  const vb=opt.labels===false?"20 10 380 380":(opt.vb||"-80 0 580 400");
+  let s=`<svg class="${opt.cls||"radar"}" viewBox="${vb}" role="img" aria-label="Radardiagram">`;
+  [.25,.5,.75,1].forEach(f=>{s+=`<polygon points="${pc.map((_,i)=>pt(i,R*f).join(",")).join(" ")}" fill="none" stroke="rgba(140,164,188,.25)"/>`;});
+  pc.forEach((_,i)=>{const q=pt(i,R);s+=`<line x1="${cx}" y1="${cy}" x2="${q[0]}" y2="${q[1]}" stroke="rgba(140,164,188,.25)"/>`;});
+  s+=`<polygon points="${pc.map((x,i)=>pt(i,R*Math.max(.03,x.p)).join(",")).join(" ")}" fill="rgba(247,125,25,.28)" stroke="#F77D19" stroke-width="${opt.labels===false?4:2.5}"/>`;
+  pc.forEach((x,i)=>{const q=pt(i,R*Math.max(.03,x.p));s+=`<circle cx="${q[0]}" cy="${q[1]}" r="${opt.labels===false?6:4}" fill="#FFB066"/>`;if(opt.labels!==false){const l=pt(i,R+26);s+=`<text x="${l[0]}" y="${l[1]+4}" font-size="${fs}" text-anchor="${Math.abs(l[0]-cx)<10?"middle":l[0]>cx?"start":"end"}">${esc(x.r.short)}</text>`;}});
+  return s+"</svg>";}
+function admOpen(id){ADM.sel=id;ADM.tab="team";admRender();window.scrollTo(0,0);}
+function admRender(){const list=admList();const now=Date.now();
+  document.querySelectorAll("#admtabs [data-admtab]").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.admtab===ADM.tab)));
+  ["board","compare","team"].forEach(t=>document.getElementById("admtab-"+t).hidden=(ADM.tab!==t));
+  const rows=list.map((p,i)=>{const T_=Object.values(p.tasks||{});const solved=T_.filter(t=>t.ok).length;const hints=T_.filter(t=>t.h).length;const wr=T_.reduce((a,t)=>a+(t.w||0),0);
     const live=!p.ended&&(now-p.start)<p.dur*60000;const age=Math.round((now-p.ts)/60000);
-    return `<tr data-team="${esc(p.teamId)}" class="${ADM.sel===p.teamId?"sel":""}"><td class="mono">${i+1}</td><td><b>${esc(p.team)}</b></td><td class="mono"><b>${p.total}</b> / ${p.max}</td>${ROOMS.map(r=>`<td class="mono"><span class="mini"><i style="width:${p.areas[r.id]||0}%"></i></span>${p.areas[r.id]||0}%</td>`).join("")}<td class="mono">${solved}</td><td class="mono">${wr}</td><td class="mono">${hints}</td><td>${p.joker&&TASKS[p.joker]?esc(TASKS[p.joker].title):"–"}</td><td><span class="pill ${live?"live":"done"}">${live?"Spelar":"Klar"}</span></td><td class="mono muted">${age<1?"nu":age+" min"}</td></tr>`;}).join("");
+    return `<tr data-team="${esc(p.teamId)}" class="${ADM.sel===p.teamId?"sel":""}"><td class="mono">${i+1}</td><td><b>${esc(p.team)}</b></td><td class="mono"><b>${p.total}</b> / ${p.max}</td>${ROOMS.map(r=>`<td class="mono"><span class="mini"><i style="width:${(p.areas||{})[r.id]||0}%"></i></span>${(p.areas||{})[r.id]||0}%</td>`).join("")}<td class="mono">${solved}</td><td class="mono">${wr}</td><td class="mono">${hints}</td><td>${p.joker&&TASKS[p.joker]?esc(TASKS[p.joker].title):"–"}</td><td><span class="pill ${live?"live":"done"}">${live?"Spelar":"Klar"}</span></td><td class="mono muted">${age<1?"nu":age+" min"}</td></tr>`;}).join("");
   document.getElementById("admboard").innerHTML=list.length?`<table class="admtbl"><thead><tr><th>#</th><th>Lag</th><th>Poäng</th>${ROOMS.map(r=>`<th>${esc(r.short)}</th>`).join("")}<th>Lösta</th><th>Fel</th><th>Ledtr.</th><th>Kristallkula</th><th>Status</th><th>Uppd.</th></tr></thead><tbody>${rows}</tbody></table>`:'<p class="msg muted" style="padding:14px">Inga lag än.</p>';
-  document.querySelectorAll("#admboard tbody tr").forEach(tr=>tr.onclick=()=>{ADM.sel=ADM.sel===tr.dataset.team?null:tr.dataset.team;admRender();});
+  document.querySelectorAll("#admboard tbody tr").forEach(tr=>tr.onclick=()=>admOpen(tr.dataset.team));
   const keys=Object.keys(TASKS);
   const head=`<tr><th>Lag</th>${keys.map(k=>`<th class="v" title="${esc(TASKS[k].title)}">${esc(ROOMS.find(r=>r.id===TASKS[k].room).name.slice(0,4))} · ${esc(TASKS[k].title.replace(/^(Python|Spegel \d): ?/,"").slice(0,18))}</th>`).join("")}</tr>`;
-  const body=list.map(p=>`<tr><td><b>${esc(p.team)}</b></td>${keys.map(k=>{const t=(p.tasks||{})[k];if(!t)return '<td class="c" style="background:#0c1828"></td>';
-    const bg=t.ok?"rgba(125,211,164,.55)":t.d?"rgba(255,122,107,.45)":"rgba(247,125,25,.35)";return `<td class="c" style="background:${bg};${t.j?"box-shadow:inset 0 0 0 2px #9d7bff":""}" title="${esc(TASKS[k].title)}: ${t.n}/${t.m} p">${t.n}</td>`;}).join("")}</tr>`).join("");
+  const body=list.map(p=>`<tr data-team="${esc(p.teamId)}"><td><b>${esc(p.team)}</b></td>${keys.map(k=>{const t=(p.tasks||{})[k];if(!t)return '<td class="c" style="background:#0c1828"></td>';
+    const bg=t.ok?"rgba(155,191,106,.55)":t.d?"rgba(224,103,90,.45)":"rgba(247,125,25,.35)";return `<td class="c" style="background:${bg};${t.j?"box-shadow:inset 0 0 0 2px #9d7bff":""}" title="${esc(TASKS[k].title)}: ${t.n}/${t.m} p">${t.n}</td>`;}).join("")}</tr>`).join("");
   document.getElementById("admmatrix").innerHTML=list.length?`<table class="admtbl hm"><thead>${head}</thead><tbody>${body}</tbody></table>`:"";
-  const p=ADM.teams[ADM.sel];const det=document.getElementById("admdetail");
-  if(!p){det.innerHTML="";return;}
-  const trows=keys.filter(k=>(p.tasks||{})[k]).map(k=>{const t=p.tasks[k],T_=TASKS[k];let ans=t.a?esc(t.a):t.p&&T_.opts?esc(T_.opts[t.p]||t.p):t.f?t.f+" hittade":t.s?esc(t.s):"";
-    return `<tr><td>${esc(ROOMS.find(r=>r.id===T_.room).name)}</td><td>${esc(T_.title)}</td><td class="mono">${t.n} / ${t.m}</td><td>${t.ok?"✓":t.d?"✗":"…"}${t.j?" · AI-joker":""}${t.h?" (ledtråd)":""}${t.w?` · ${t.w} fel`:""}</td><td style="white-space:normal;max-width:380px">${ans}</td></tr>`;}).join("");
-  det.innerHTML=`<div class="task"><div class="taskhead"><span class="chip">Lagdetaljer</span><h3>${esc(p.team)} · ${p.total} / ${p.max} p</h3></div><div class="detail"><div class="scroll"><table class="admtbl"><thead><tr><th>Rum</th><th>Uppgift</th><th>Poäng</th><th>Status</th><th>Svar</th></tr></thead><tbody>${trows||'<tr><td colspan="5" class="muted">Inga uppgifter påbörjade.</td></tr>'}</tbody></table></div><div><label>Lagets Python-kod</label><pre class="log" style="max-height:420px">${esc(p.py||"(ingen kod skickad)")}</pre></div></div></div>`;}
+  document.querySelectorAll("#admmatrix tbody tr").forEach(tr=>tr.onclick=()=>admOpen(tr.dataset.team));
+  // compare
+  document.getElementById("admcompare").innerHTML=list.length?list.map((p,i)=>{const live=!p.ended&&(now-p.start)<p.dur*60000;const pr=admProfile(p);
+    return `<button type="button" class="cmpcard" data-team="${esc(p.teamId)}"><span class="rank${i===0?" r1":""}">#${i+1}</span><span class="nm">${esc(p.team)}</span><span class="tot">${p.total}<small> / ${p.max} p</small></span><span class="prof">${esc(pr[0])}</span>${admRadar(admPcts(p),{cls:"cmpradar",fs:21,vb:"-150 -6 720 412"})}<span class="foot"><span>${Math.round(p.total/p.max*100)} %</span><span>${p.joker?"Kristallkula använd":"Kulan oanvänd"}</span><span class="pill ${live?"live":"done"}">${live?"Spelar":"Klar"}</span></span></button>`;}).join(""):'<p class="muted">Inga lag än. Tryck Hämta eller klistra in resultatkoder.</p>';
+  document.querySelectorAll("#admcompare .cmpcard").forEach(c=>c.onclick=()=>admOpen(c.dataset.team));
+  // team detail
+  const det=document.getElementById("admdetail");const p=ADM.teams[ADM.sel];
+  if(!p){det.innerHTML=`<p class="muted" style="font-size:1.05rem">Välj ett lag i topplistan eller under Jämför lag.</p>`;return;}
+  const idx=list.findIndex(x=>x.teamId===p.teamId);const pc=admPcts(p);const pr=admProfile(p);const T_=Object.values(p.tasks||{});
+  const mins=Math.round(Math.min(p.dur*60000,(p.ts-p.start))/60000);const wr=T_.reduce((a,t)=>a+(t.w||0),0);const hints=T_.filter(t=>t.h).length;
+  const nav=`<div class="teamnav"><button type="button" class="btn ghost small" id="admprev" ${idx<=0?"disabled":""}>← Föregående</button><select id="admpick" aria-label="Välj lag">${list.map((x,i)=>`<option value="${esc(x.teamId)}" ${x.teamId===p.teamId?"selected":""}>#${i+1} ${esc(x.team)}</option>`).join("")}</select><button type="button" class="btn ghost small" id="admnext" ${idx>=list.length-1?"disabled":""}>Nästa →</button><span style="flex:1"></span><button type="button" class="btn ghost small" id="admtocmp">Till Jämför lag</button></div>`;
+  const trows=keys.filter(k=>(p.tasks||{})[k]).map(k=>{const t=p.tasks[k],TT=TASKS[k];let ans=t.a?esc(t.a):t.p&&TT.opts?esc(TT.opts[t.p]||t.p):t.f?t.f+" hittade":t.s?esc(t.s):"";
+    return `<tr><td>${esc(ROOMS.find(r=>r.id===TT.room).name)}</td><td>${esc(TT.title)}</td><td class="mono">${t.n} / ${t.m}</td><td>${t.ok?"✓":t.d?"✗":"…"}${t.j?" · AI-joker":""}${t.h?" · ledtråd":""}${t.w?` · ${t.w} fel`:""}</td><td style="white-space:normal;min-width:260px;max-width:460px">${ans}</td></tr>`;}).join("");
+  det.innerHTML=`${nav}
+   <div class="teamhead"><div class="eyebrow">Plats ${idx+1} av ${list.length} · ${!p.ended&&(Date.now()-p.start)<p.dur*60000?"spelar fortfarande":"klart"}</div><h2>${esc(p.team)}</h2></div>
+   <div class="resgrid" style="margin-top:0"><div style="display:flex;flex-direction:column;gap:20px;min-width:0"><div class="total">${p.total}<small> / ${p.max} p</small></div>
+     <div class="profile"><div class="eyebrow">Spökjägarprofil</div><h3>${esc(pr[0])}</h3><p class="muted">${esc(pr[1])}</p></div>
+     <div class="bars">${pc.map(x=>`<div class="bar"><span>${esc(x.r.area)}</span><div class="track"><i style="width:${Math.round(x.p*100)}%"></i></div><b>${Math.round(x.p*100)} %</b></div>`).join("")}</div></div>
+     <div>${admRadar(pc,{cls:"radar"}).replace('<svg class="radar"','<svg class="radar" style="width:100%;max-width:560px;height:auto;display:block;margin:auto"')}</div></div>
+   <div class="statsrow"><div><b>${mins} min</b><span>Speltid</span></div><div><b>${wr}</b><span>Felsvar</span></div><div><b>${hints}</b><span>Ledtrådar</span></div><div><b style="font-size:1rem;line-height:1.9">${p.joker&&TASKS[p.joker]?esc(TASKS[p.joker].title):"Oanvänd"}</b><span>Kristallkulan</span></div></div>
+   <div class="task"><div class="taskhead"><span class="chip">Svar</span><h3>Uppgift för uppgift</h3></div><div class="scroll"><table class="admtbl"><thead><tr><th>Rum</th><th>Uppgift</th><th>Poäng</th><th>Status</th><th>Svar</th></tr></thead><tbody>${trows||'<tr><td colspan="5" class="muted">Inga uppgifter påbörjade.</td></tr>'}</tbody></table></div></div>
+   <div class="task"><div class="taskhead"><span class="chip">Python</span><h3>Lagets Python-kod</h3></div><pre class="log" style="max-height:520px">${esc(p.py||"(ingen kod skickad)")}</pre></div>`;
+  const go_=d=>{const n=list[idx+d];if(n)admOpen(n.teamId);};
+  document.getElementById("admprev").onclick=()=>go_(-1);document.getElementById("admnext").onclick=()=>go_(1);
+  document.getElementById("admpick").onchange=e=>admOpen(e.target.value);
+  document.getElementById("admtocmp").onclick=()=>{ADM.tab="compare";admRender();};}
 function admInit(){admLoadLocal();admRender();
+  document.querySelectorAll("#admtabs [data-admtab]").forEach(b=>b.onclick=()=>{ADM.tab=b.dataset.admtab;admRender();});
   document.getElementById("admform").onsubmit=e=>{e.preventDefault();admFetch();};
   const auto=()=>{clearInterval(ADM.timer);if(document.getElementById("admauto").checked)ADM.timer=setInterval(()=>{if(current==="admin"&&document.getElementById("admkey").value)admFetch();},15000);};
   document.getElementById("admauto").onchange=auto;auto();
