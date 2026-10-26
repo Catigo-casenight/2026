@@ -1260,7 +1260,7 @@ const ROOMS = [
 
 /* ---------- tasks ---------- */
 const TASKS = {
-  ark:{room:"arkivet",type:"click",lvl:"Bas + Avancerat",title:"Fånga spökena i leverantörsregistret",cap:9999,floor0:true,
+  ark:{room:"arkivet",type:"click",lvl:"Bas + Avancerat",title:"Fånga spökena i leverantörsregistret",cap:9999,
        hint:"Läs varje tecken, inte bara orden: bokstäver som liknar siffror, toppdomäner, decimaltecken och datum som inte finns. För regel 10: Luhn-algoritmen dubblar varannan siffra från vänster i de nio första siffrorna."},
   ark_dim:{room:"arkivet",type:"mcq",lvl:"Bas",pts:3,title:"Vilken dimension?",
        q:"En leverantör finns två gånger i registret under olika namn. Vilken datakvalitetsdimension bryter det främst mot?",
@@ -1337,11 +1337,11 @@ const TASKS = {
        spec:["Deduplicera som i dedupe().","Ta bort rader där <code>qty &lt;= 0</code> eller där <code>type</code> inte är exakt <code>'sale'</code> eller <code>'return'</code>.","<code>store</code>: ta bort blanksteg runt och gör som <code>str.capitalize()</code>, alltså <code>\"  stockholm \"</code> → <code>\"Stockholm\"</code>.","<code>amount</code> = qty × unit_price, negativt för returer, avrundat till 2 decimaler med <code>round()</code>.","<code>modified_utc</code>: tidpunkten i UTC som text, <code>\"ÅÅÅÅ-MM-DD HH:MM:SS\"</code>.","Returnera dicts med exakt nycklarna <code>sale_id, store, type, amount, modified_utc</code>, sorterade på sale_id."],
        hint:"Bygg vidare på dedupe(). För UTC: dt.astimezone(timezone.utc).strftime(\"%Y-%m-%d %H:%M:%S\")."},
 
-  spe1:{room:"spegelsalen",type:"hotspot",chart:"bar",lvl:"Bas",title:"Spegel 1: Försäljning per butik",cap:3,floor0:true,lives:3,
+  spe1:{room:"spegelsalen",type:"hotspot",chart:"bar",lvl:"Bas",title:"Spegel 1: Försäljning per butik",cap:3,lives:3,
        hint:"Titta på axlarna och det finstilta. Vad lovar titeln, och vad visar resten?"},
-  spe2:{room:"spegelsalen",type:"hotspot",chart:"kpi",lvl:"Avancerat",title:"Spegel 2: KPI-panelen",cap:3,floor0:true,lives:3,
+  spe2:{room:"spegelsalen",type:"hotspot",chart:"kpi",lvl:"Avancerat",title:"Spegel 2: KPI-panelen",cap:3,lives:3,
        hint:"Läs formlerna under varje KPI. Stämmer de med rubriken? Och vilka färger betyder bra och dåligt?"},
-  spe3:{room:"spegelsalen",type:"hotspot",chart:"line",lvl:"Bas",title:"Spegel 3: Kyla och godis",cap:3,floor0:true,lives:3,
+  spe3:{room:"spegelsalen",type:"hotspot",chart:"line",lvl:"Bas",title:"Spegel 3: Kyla och godis",cap:3,lives:3,
        hint:"Läs båda y-axlarna noga, räkna dagarna mellan x-etiketterna och jämför förklaringen med linjerna."},
 
   tor_share:{room:"tornet",type:"mcq",lvl:"Bas",pts:3,title:"Sista veckans makt",
@@ -1406,10 +1406,10 @@ function taskMax(id){const t=TASKS[id];
   if(t.type==="model")return Object.keys(TABLES).length+ANS.relCount;
   return t.pts;}
 function cap(id){const t=TASKS[id];return t.cap!=null?t.cap:t.type==="mcq"?0:(t.type==="order"||t.type==="model")?1:2;}
-function net(id){const s=S.t[id];if(!s)return 0;let b=s.earned-Math.min(s.wrong,cap(id));if(TASKS[id].floor0)b=Math.max(0,b);return b-(s.hint?1:0)-(s.joker?2:0);}
+function net(id){const s=S.t[id];if(!s)return 0;return s.earned-Math.min(s.wrong,cap(id))-(s.hint?1:0)-(s.joker?2:0);}
 function roomMax(r){return ROOM_TASKS(r).reduce((a,k)=>a+taskMax(k),0);}
 function roomNet(r){return ROOM_TASKS(r).reduce((a,k)=>a+net(k),0);}
-function roomPct(r){return Math.max(0,roomNet(r))/roomMax(r);}
+function roomPct(r){return roomNet(r)/roomMax(r);}
 function total(){return Object.keys(TASKS).reduce((a,k)=>a+net(k),0);}
 function grandMax(){return Object.keys(TASKS).reduce((a,k)=>a+taskMax(k),0);}
 function roomStarted(r){return ROOM_TASKS(r).some(k=>S.t[k]&&S.t[k].earned>0);}
@@ -1460,11 +1460,11 @@ let toastTimer;function toast(msg){if(window.__haptic)window.__haptic(/Rätt|få
 function houseStates(svg){if(!S)return;svg.querySelectorAll(".win").forEach(w=>{const r=w.dataset.room;
   w.classList.toggle("done",roomDone(r));w.classList.toggle("started",roomStarted(r)&&!roomDone(r));
   w.classList.toggle("locked",r==="tornet"&&!towerOpen());
-  const sc=w.querySelector(".score");if(sc)sc.textContent=(r==="tornet"&&!towerOpen())?"LÅST":Math.max(0,roomNet(r))+" / "+roomMax(r)+" P";});}
+  const sc=w.querySelector(".score");if(sc)sc.textContent=(r==="tornet"&&!towerOpen())?"LÅST":roomNet(r)+" / "+roomMax(r)+" P";});}
 function renderMap(){const host=document.getElementById("map-house");if(!host.firstChild){host.innerHTML=document.querySelector("#v-start .house").outerHTML;bindHouse(host.querySelector(".house"));}
   houseStates(host.querySelector(".house"));
   document.getElementById("roomcards").innerHTML=ROOMS.map(r=>{const lk=r.id==="tornet"&&!towerOpen();const pct=Math.round(roomPct(r.id)*100);
-    return `<button class="roomcard${lk?" locked":""}" data-room="${r.id}" type="button" ${lk?'aria-disabled="true"':""}><span class="area">${esc(r.area)}</span><h3>${esc(r.name)}</h3><p>${esc(r.blurb)}</p><div class="meter"><i style="width:${pct}%"></i></div><div class="pts"><span>${Math.max(0,roomNet(r.id))} / ${roomMax(r.id)} p</span><span>${lk?"Låst":roomDone(r.id)?"Klart":roomStarted(r.id)?"Påbörjat":"Orört"}</span></div></button>`;}).join("");
+    return `<button class="roomcard${lk?" locked":""}" data-room="${r.id}" type="button" ${lk?'aria-disabled="true"':""}><span class="area">${esc(r.area)}</span><h3>${esc(r.name)}</h3><p>${esc(r.blurb)}</p><div class="meter"><i style="width:${pct}%"></i></div><div class="pts"><span>${roomNet(r.id)} / ${roomMax(r.id)} p</span><span>${lk?"Låst":roomDone(r.id)?"Klart":roomStarted(r.id)?"Påbörjat":"Orört"}</span></div></button>`;}).join("");
   document.querySelectorAll("#roomcards .roomcard").forEach(b=>b.onclick=()=>enterRoom(b.dataset.room));}
 function bindHouse(svg){svg.querySelectorAll(".win").forEach(w=>{const go=()=>{if(!S){document.getElementById("teamname").focus();return;}enterRoom(w.dataset.room);};w.addEventListener("click",go);w.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}});});}
 
@@ -1510,7 +1510,7 @@ function arkHTML(){const s=T("ark");const caught=new Set(s.cells||[]);
   let tbl='<div class="scroll"><table class="reg"><thead><tr><th>#</th>'+REG_COLS.map(c=>`<th>${c[1]}</th>`).join("")+"</tr></thead><tbody>";
   REG.forEach((row,ri)=>{tbl+=`<tr><td class="rn">${ri+1}</td>`+row.map((v,ci)=>{const cell="r"+(ri+1)+"-"+REG_COLS[ci][0];return `<td class="${caught.has(cell)?((s.dups||[]).includes(cell)?"caught dup":"caught"):""}"><button type="button" data-cell="${cell}" ${locked()?"disabled":""}>${esc(v)||"&nbsp;"}</button></td>`;}).join("")+"</tr>";});
   tbl+="</tbody></table></div>";
-  return `<div class="contract">${CONTRACT.map(c=>`<div>${esc(c)}</div>`).join("")}</div>${ghosts("ark","fångade")}${tbl}${notes("ark")}<p class="muted" style="font-size:.85rem">Basfel ger 2 p, avancerade fel 3 p. Varje felklick kostar 1 p och förbannar er: 3, 6, 12 och sedan 20 sekunder. Klickuppgiften kan inte gå under 0 p.</p>`;}
+  return `<div class="contract">${CONTRACT.map(c=>`<div>${esc(c)}</div>`).join("")}</div>${ghosts("ark","fångade")}${tbl}${notes("ark")}<p class="muted" style="font-size:.85rem">Basfel ger 2 p, avancerade fel 3 p. Varje felklick kostar 1 p och förbannar er: 3, 6, 12 och sedan 20 sekunder. Minuspoängen står kvar, även om ni hittar fler spöken senare.</p>`;}
 
 /* ---------- biblioteket: model builder ---------- */
 function roleOf(place){if(!place)return null;if(place==="grav")return "grav";return SLOTS[place].role;}
@@ -1661,7 +1661,7 @@ function speHTML(id){const s=T(id);const cs=new Set(s.cells||[]),miss=new Set(s.
   const g=(hid,content,box)=>`<g class="hs${cs.has(hid)?((s.dups||[]).includes(hid)?" caught dup":" caught"):""}${miss.has(hid)?" miss":""}" data-hs="${id}|${hid}" tabindex="${locked()||s.cracked?-1:0}" role="button" aria-label="${hid}">${content}<rect class="hit" x="${box[0]}" y="${box[1]}" width="${box[2]}" height="${box[3]}" rx="4"/></g>`;
   const svg=CHARTS[TASKS[id].chart](g);
   const lives=TASKS[id].lives,lit=Math.max(0,lives-s.wrong);const candles=`<div class="lives" aria-label="${lit} av ${lives} försök kvar">${Array.from({length:lives},(_,i)=>`<span class="candle${i<lit?"":" out"}"></span>`).join("")}<span class="mono">${s.cracked?"Spegeln har spruckit":lit+" av "+lives+" försök kvar"}</span></div>`;
-  return `<p class="q">Klicka på de delar av rapporten som vilseleder. Varje hittad förvrängning ger 2 p. Spegeln tål 3 felklick (−1 p styck) innan den spricker.</p>${candles}<div class="mirror${s.cracked?" cracked":""}">${svg}</div>${ghosts(id,"förvrängningar hittade")}${notes(id)}`;}
+  return `<p class="q">Klicka på de delar av rapporten som vilseleder. Varje hittad förvrängning ger 2 p. Spegeln tål 3 felklick (−1 p styck) innan den spricker. Minuspoängen står kvar.</p>${candles}<div class="mirror${s.cracked?" cracked":""}">${svg}</div>${ghosts(id,"förvrängningar hittade")}${notes(id)}`;}
 const sv=n=>n.toLocaleString("sv-SE");
 const CHARTS={
  bar:g=>{const vals=[["Linköping",4820,"#8CA4BC"],["Norrköping",4410,"#D4501A"],["Stockholm",5960,"#8CA4BC"],["Uppsala",3980,"#D4501A"]];
