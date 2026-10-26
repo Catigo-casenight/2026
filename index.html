@@ -646,6 +646,46 @@ button,.opt,.roomcard,.step,.tcard,.tcol,.cmpcard,.hs,.house .win,.house .door,[
 .hs.caught.dup .hit{fill:none;stroke:#3d6b1f;stroke-width:2;stroke-dasharray:6 4}
 .dupnote{font-family:var(--type);font-size:.88rem;color:var(--sky);width:100%}
 
+
+/* prisutdelning: storbild */
+#admtab-award .stage{min-height:calc(100vh - 230px);gap:2.2vw;align-items:end}
+#admtab-award:fullscreen .stage{min-height:calc(100vh - 110px)}
+#admtab-award:fullscreen .livebar{opacity:.35}
+#admtab-award:fullscreen .livebar:hover{opacity:1}
+.podium{gap:.9vh;padding:2.4vh 1.4vw}
+.podium.p1{min-height:min(72vh,900px)}.podium.p2{min-height:min(64vh,800px)}.podium.p3{min-height:min(58vh,720px)}
+#admtab-award .stage.awards{align-items:stretch}
+#v-admin .wrap:has(#admtab-award:not([hidden])){max-width:none}
+.podium .place{font-size:clamp(3rem,6vw,8rem)}
+.podium .nm{font-size:clamp(1.6rem,2.9vw,4rem)}
+.podium .members{font-size:clamp(.95rem,1.3vw,1.8rem)}
+.podium .pts{font-size:clamp(2.6rem,5vw,7rem)}
+.podium .pts small{font-size:.3em}
+.podium .prof{font-size:clamp(1rem,1.4vw,1.8rem)}
+.podium svg{max-width:min(100%,26vw);max-height:21vh}
+.podium.hidden .q{font-size:clamp(6rem,14vw,16rem)}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:.6vh 1vw;width:100%;margin-top:.6vh}
+.facts div{background:#070b11;border:1px solid #2b3a4b;padding:.6vh .6vw;display:flex;flex-direction:column;gap:2px;min-width:0}
+.facts span{font-family:var(--mono);font-size:clamp(.7rem,.85vw,1.05rem);color:var(--sky);text-transform:uppercase;letter-spacing:.04em}
+.facts b{font-family:var(--type);font-weight:400;font-size:clamp(.95rem,1.3vw,1.7rem);color:var(--sand);overflow-wrap:anywhere}
+.stage.awards{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:3vh}
+.aw-head{display:flex;flex-direction:column;gap:2vh}
+.aw-title{font-family:var(--display);font-size:clamp(2.6rem,5.5vw,7rem);color:var(--mandarin);text-shadow:0 0 30px rgba(247,125,25,.4)}
+.aw-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1vw}
+.aw-stats div{border:1px solid #2b3a4b;background:#070b11;padding:1.4vh 1vw;min-width:0}
+.aw-stats b{display:block;font-family:var(--display);font-size:clamp(1.6rem,3vw,4rem);color:var(--sand);line-height:1;overflow-wrap:anywhere}
+.aw-stats div:last-child b{font-family:var(--heading);font-size:clamp(1.1rem,1.8vw,2.4rem)}
+.aw-stats span{font-family:var(--type);font-size:clamp(.85rem,1.1vw,1.4rem);color:var(--sky)}
+.aw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22vw),1fr));gap:1.4vw}
+.aw-card{display:flex;flex-direction:column;gap:.4vh;padding:1.6vh 1.2vw;color:var(--ink);background-color:var(--paper);background-image:var(--stains),var(--noise-paper);clip-path:polygon(0 2%,2% 0,98% 1%,100% 3%,99% 98%,97% 100%,1% 99%,0 97%);box-shadow:none}
+.aw-card:nth-child(odd){transform:rotate(-.5deg)}.aw-card:nth-child(even){transform:rotate(.4deg)}
+.aw-t{font-family:var(--heading);font-size:clamp(1.4rem,2.2vw,2.9rem);color:var(--pumpkin);line-height:1.05}
+.aw-sub{font-family:var(--type);font-size:clamp(.85rem,1vw,1.3rem);color:var(--ink-soft)}
+.aw-team{font-family:var(--display);font-size:clamp(1.5rem,2.3vw,3.4rem);line-height:1.05;margin-top:.8vh;overflow-wrap:break-word;hyphens:auto}
+.aw-mem{font-family:var(--type);font-size:clamp(.85rem,1vw,1.3rem);color:var(--ink-soft)}
+.aw-why{font-family:var(--mono);font-size:clamp(.8rem,.95vw,1.2rem);color:var(--rust)}
+@media (max-width:900px){#admtab-award .stage{min-height:0}.podium.p1,.podium.p2,.podium.p3{min-height:0}.aw-stats{grid-template-columns:1fr 1fr}.podium svg{max-width:100%}}
+
 /* ---------- responsive ---------- */
 @media (min-width:1600px){body{font-size:20px}.wrap{max-width:1360px}.hud-in{max-width:1360px}}
 @media (max-width:900px){
@@ -1985,19 +2025,40 @@ function admReview(){if(ADM.tab!=="review")return;const list=admList();const N=l
     html+=`</div>`;});
   document.getElementById("review").innerHTML=N?html:'<p class="muted">Ingen data än. Hämta resultaten först.</p>';}
 /* ---------- prisutdelning ---------- */
-function admAward(){if(ADM.tab!=="award")return;const top=admList().slice(0,3);const step=ADM.award||0;const btn=document.getElementById("awnext");
+function admFacts(p){const pc=admPcts(p).slice().sort((a,b)=>b.p-a.p);const best=pc[0];const T_=Object.values(p.tasks||{});
+  const mins=Math.round(Math.min(admEnd(p)-p.start,(p.ts-p.start))/60000);
+  return {best:best&&best.p>0?`${best.r.short} ${Math.round(best.p*100)} %`:"–",solved:`${T_.filter(t=>t.ok).length} av ${Object.keys(TASKS).length}`,mins:`${Math.max(0,mins)} min`,ai:p.joker?"Använd":"Oanvänd"};}
+function admAwardsList(list){const out=[];
+  ROOMS.forEach(r=>{const c=list.filter(p=>((p.areas||{})[r.id]||0)>0).sort((a,b)=>(b.areas[r.id]-a.areas[r.id])||(b.total-a.total))[0];
+    if(c)out.push({t:PROFILES[r.id][0],sub:`Bäst i ${r.name} · ${r.area}`,team:c,why:`${c.areas[r.id]} % av rummets poäng`});});
+  const noai=list.filter(p=>!p.joker).sort((a,b)=>b.total-a.total)[0];if(noai)out.push({t:"Utan kristallkula",sub:"Bästa lag som aldrig frågade AI",team:noai,why:`${noai.total} p helt på egen hand`});
+  const solvedN=p=>Object.values(p.tasks||{}).filter(t=>t.ok).length,wr=p=>Object.values(p.tasks||{}).reduce((a,t)=>a+(t.w||0),0);
+  const clean=list.filter(p=>solvedN(p)>=5).sort((a,b)=>(wr(a)/solvedN(a))-(wr(b)/solvedN(b))||b.total-a.total)[0];if(clean)out.push({t:"Den stadiga handen",sub:"Minst antal fel per löst uppgift",team:clean,why:`${wr(clean)} fel på ${solvedN(clean)} lösta uppgifter`});
+  const py=list.filter(p=>(p.tasks||{}).py_clean&&p.tasks.py_clean.ok).sort((a,b)=>b.total-a.total)[0];if(py)out.push({t:"Python-trollkarlen",sub:"Lagade laddningen i Pannrummet",team:py,why:"Alla tester gröna i clean()"});
+  return out;}
+function admAward(){if(ADM.tab!=="award")return;const list=admList();const top=list.slice(0,3);const step=ADM.award||0;const btn=document.getElementById("awnext");
+  const labels=["Avslöja plats 3","Avslöja plats 2","Avslöja plats 1","Visa utmärkelser","Klart"];
+  btn.textContent=list.length?labels[Math.min(step,4)]:"Ingen data än";btn.disabled=step>=4||!list.length;
+  const stage=document.getElementById("awstage");
+  if(step>=4){const aw=admAwardsList(list);const parts=list.reduce((a,p)=>a+(p.members||[]).length,0);const solved=list.reduce((a,p)=>a+Object.values(p.tasks||{}).filter(t=>t.ok).length,0);
+    const st=Object.keys(TASKS).map(k=>{const att=list.filter(p=>(p.tasks||{})[k]);return {k,att:att.length,ok:att.filter(p=>p.tasks[k].ok).length};}).filter(x=>x.att>=Math.max(1,Math.ceil(list.length/2))).sort((a,b)=>a.ok/a.att-b.ok/b.att)[0];
+    stage.className="stage awards";
+    stage.innerHTML=`<div class="aw-head"><h2 class="aw-title">Kvällens utmärkelser</h2><div class="aw-stats"><div><b>${list.length}</b><span>lag</span></div><div><b>${parts||"–"}</b><span>spökjägare</span></div><div><b>${solved}</b><span>lösta uppgifter</span></div><div><b>${st?esc(TASKS[st.k].title):"–"}</b><span>svåraste uppgiften${st?` · ${st.ok} av ${st.att} lag`:""}</span></div></div></div>
+      <div class="aw-grid">${aw.map((a,i)=>`<div class="aw-card reveal" style="animation-delay:${i*0.25}s"><span class="aw-t">${esc(a.t)}</span><span class="aw-sub">${esc(a.sub)}</span><span class="aw-team">${esc(a.team.team)}</span>${membersLine(a.team)?`<span class="aw-mem">${esc(membersLine(a.team))}</span>`:""}<span class="aw-why">${esc(a.why)}</span></div>`).join("")}</div>`;return;}
+  stage.className="stage";
   const order=[2,1,0];const revealed=new Set(order.slice(0,step));
-  btn.textContent=step>=3||top.length===0?"Alla avslöjade":`Avslöja plats ${3-step}`;btn.disabled=step>=3||top.length===0;
-  document.getElementById("awstage").innerHTML=[0,1,2].map(i=>{const p=top[i];const cls="podium p"+(i+1);
+  stage.innerHTML=[0,1,2].map(i=>{const p=top[i];const cls="podium p"+(i+1);
     if(!p)return `<div class="${cls} hidden"><span class="q">–</span></div>`;
     if(!revealed.has(i))return `<div class="${cls} hidden"><span class="place">${i+1}</span><span class="q">?</span></div>`;
-    const pr=admProfile(p);return `<div class="${cls}${ADM.justRevealed===i?" reveal":""}"><span class="place">${i+1}</span><span class="nm">${esc(p.team)}</span>${membersLine(p)?`<span class="members">${(p.members||[]).map(m=>`<span>${esc(m.name)}</span>`).join("")}</span>`:""}<span class="pts">${p.total}<small> / ${p.max} p</small></span><span class="prof">${esc(pr[0])}</span>${admRadar(admPcts(p),{cls:"cmpradar",fs:22,vb:"-150 -6 720 412"})}</div>`;}).join("");
+    const pr=admProfile(p),f=admFacts(p);
+    return `<div class="${cls}${ADM.justRevealed===i?" reveal":""}"><span class="place">${i+1}</span><span class="nm">${esc(p.team)}</span>${(p.members||[]).length?`<span class="members">${p.members.map(m=>`<span>${esc(m.name)}</span>`).join("")}</span>`:""}<span class="pts">${p.total}<small> p</small></span><span class="prof">${esc(pr[0])}</span>${admRadar(admPcts(p),{cls:"cmpradar",fs:24,vb:"-150 -6 720 412"})}<div class="facts"><div><span>Starkast</span><b>${esc(f.best)}</b></div><div><span>Lösta</span><b>${f.solved}</b></div><div><span>Speltid</span><b>${f.mins}</b></div><div><span>Kristallkula</span><b>${f.ai==="Oanvänd"?"Klarade sig utan":"Använd"}</b></div></div></div>`;}).join("");
   ADM.justRevealed=null;}
-function admAwardInit(){document.getElementById("awnext").onclick=()=>{const s=ADM.award||0;if(s>=3)return;ADM.justRevealed=[2,1,0][s];ADM.award=s+1;admAward();};
+function admAwardInit(){document.getElementById("awnext").onclick=()=>{const s=ADM.award||0;if(s>=4)return;if(s<3)ADM.justRevealed=[2,1,0][s];ADM.award=s+1;admAward();};
   arm(document.getElementById("awreset"),"Säkert? Klicka igen",()=>{ADM.award=0;admAward();});
   const fs=(id)=>()=>{const el=document.getElementById(id);try{if(document.fullscreenElement)document.exitFullscreen();else el.requestFullscreen().catch(()=>toast("Helskärm stöds inte här."));}catch(e){toast("Helskärm stöds inte här.");}};
   document.getElementById("awfs").onclick=fs("admtab-award");document.getElementById("revfs").onclick=fs("admtab-review");
-  document.getElementById("revroom").onchange=()=>admReview();}
+  document.getElementById("revroom").onchange=()=>admReview();
+  document.addEventListener("keydown",e=>{if(current==="admin"&&ADM.tab==="award"&&(e.key==="ArrowRight"||e.key===" "||e.key==="PageDown")&&!/INPUT|TEXTAREA|SELECT/.test((document.activeElement||{}).tagName||"")){e.preventDefault();document.getElementById("awnext").click();}});}
 function admOpen(id){ADM.sel=id;ADM.tab="team";admRender();window.scrollTo(0,0);}
 function admRender(){const list=admList();const now=Date.now();
   document.querySelectorAll("#admtabs [data-admtab]").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.admtab===ADM.tab)));
