@@ -134,6 +134,9 @@ input[type=checkbox]{accent-color:var(--pumpkin);width:18px;height:18px}
 /* ---------- house ---------- */
 .house{width:100%;height:auto;display:block;max-width:100%;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%),linear-gradient(to bottom,#000 80%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%),linear-gradient(to bottom,#000 80%,transparent 100%);mask-composite:intersect}
 .house .win{cursor:pointer}
+#v-start .house .door{cursor:pointer}
+#v-start .house .door:hover .doorleaf,#v-start .house .door:focus-visible .doorleaf{fill:#5a2a10;stroke:var(--mandarin);stroke-width:3;filter:url(#glow)}
+#v-start .house .door:focus{outline:none}
 .house .win .glass{fill:#0c1a2b;transition:fill .4s}
 .house .win .frame{stroke:#8CA4BC;transition:stroke .15s}
 .house .win .wghost{opacity:0;fill:#09111D;transition:opacity .5s}
@@ -482,6 +485,7 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
 .podium.hidden .q{font-family:var(--display);font-size:7rem;color:#223040;text-shadow:none}
 .podium.p1:not(.hidden){box-shadow:inset 0 0 0 4px #0a1018,inset 0 0 0 5px var(--pumpkin),0 0 60px rgba(247,125,25,.3),0 20px 40px rgba(0,0,0,.6)}
 @media (prefers-reduced-motion:no-preference){.podium.reveal{animation:reveal 1.1s cubic-bezier(.2,.9,.3,1) both}@keyframes reveal{0%{opacity:0;transform:translateY(30px) scale(.92);filter:blur(6px) brightness(2)}60%{opacity:1;filter:blur(0) brightness(1.4)}100%{transform:none;filter:none}}}
+.task.danger{border-color:rgba(224,103,90,.6)}
 .msgrow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:8px 10px;border:1px solid #2b3a4b;background:#070b11;margin-top:8px}
 .msgrow .mono{font-size:.8rem;color:var(--sky);white-space:nowrap}
 @media (max-width:900px){.stage{grid-template-columns:1fr}.podium.p1,.podium.p2,.podium.p3{order:0;min-height:0}.revopt{grid-template-columns:2em 1fr 3.5em}.revopt .track{display:none}}
@@ -663,7 +667,7 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
     <div class="hero">
       <div class="hero-text">
         <img src="data:image/png;base64,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" alt="Catigo" style="height:30px;width:auto;align-self:flex-start">
-        <div class="eyebrow">Case Night · Halloween 2026</div>
+        <div class="eyebrow">Case Night · November 2026</div>
         <h1>Det hemsökta <span class="o">datalagret</span></h1>
         <p class="lead">Godiskedjan <b>Nattens Godis AB</b> har styrelsemöte vid midnatt. Men något spökar i deras dataplattform: register som ljuger, pipelines som föder zombierader och rapporter som förvränger sanningen. Ni är Catigos spökjägare. Gå in i huset, välj rum i vilken ordning ni vill och rädda så mycket ni hinner.</p>
         <form class="startform" id="startform" autocomplete="off">
@@ -695,7 +699,7 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
 <path d="M489 24 V6 M483 12 H495" stroke="#8CA4BC" stroke-width="2"/>
 <polygon points="262,330 300,306 338,330" fill="#09111D" stroke="#5B6E82" stroke-width="1.5"/>
 <rect x="266" y="330" width="5" height="65" fill="#5B6E82"/><rect x="329" y="330" width="5" height="65" fill="#5B6E82"/>
-<path d="M280 395 V350 a20 20 0 0 1 40 0 V395z" fill="#2a160b" stroke="#D4501A" stroke-width="2"/><path d="M300 332 V395" stroke="#09111D" stroke-width="1.5"/><circle cx="312" cy="368" r="2.5" fill="#F77D19"/>
+<g class="door" role="button" tabindex="0" aria-label="Gå in i huset"><path class="doorleaf" d="M280 395 V350 a20 20 0 0 1 40 0 V395z" fill="#2a160b" stroke="#D4501A" stroke-width="2"/><path d="M300 332 V395" stroke="#09111D" stroke-width="1.5"/><circle cx="312" cy="368" r="2.5" fill="#F77D19"/><rect x="276" y="326" width="48" height="70" fill="transparent"/></g>
 <rect x="272" y="395" width="56" height="6" fill="#5B6E82"/><rect x="266" y="401" width="68" height="6" fill="#3d5068"/>
 <path d="M0 404 Q160 392 320 400 T640 398 V480 H0z" fill="url(#groundG)"/>
 <polygon points="276,407 324,407 352,480 248,480" fill="#16283f" opacity=".7"/>
@@ -888,6 +892,9 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
         <div class="answerrow"><button type="button" class="btn" id="msgsend">Skicka telegram</button>
           <button type="button" class="btn ghost small" data-quick="15 minuter kvar till midnatt!">15 min kvar</button><button type="button" class="btn ghost small" data-quick="5 minuter kvar! Glöm inte Tornet.">5 min kvar</button><button type="button" class="btn ghost small" data-quick="Tips: läs tidszonerna i Pannrummets logg noga.">Tips Pannrummet</button><button type="button" class="btn ghost small" data-quick="Tips: kristallkulan (AI-jokern) kan bara användas en gång. Välj klokt!">Tips kristallkulan</button></div>
         <div id="msglist"></div></div>
+      <div class="task danger"><div class="taskhead"><span class="chip bad">Farozon</span><h3>Nollställ allt</h3></div>
+        <p class="q">Tar bort alla lag och resultat i kalkylarket, alla telegram, den gemensamma klockan och listan över borttagna lag. Lag som spelade innan nollställningen kan inte skicka in fler resultat, och deras webbläsare börjar om från startsidan nästa gång de kontaktar servern. Använd det på morgonen samma dag för att rensa bort alla tester.</p>
+        <div class="answerrow"><div style="min-width:240px"><label for="resetconfirm">Skriv NOLLSTÄLL för att bekräfta</label><input type="text" id="resetconfirm" autocomplete="off" placeholder="NOLLSTÄLL"></div><button type="button" class="btn ghost admdel" id="resetall" disabled>Nollställ allt</button></div></div>
     </div>
     <div class="task"><div class="taskhead"><span class="chip">Reserv</span><h3>Klistra in resultatkoder</h3></div><textarea id="admcodes" rows="4" placeholder="En eller flera koder, en per rad"></textarea><div class="answerrow"><button class="btn ghost" id="admaddcodes" type="button">Lägg till koder</button><button class="btn ghost small" id="admclear" type="button">Rensa listan</button></div></div>
   </div>
@@ -1335,7 +1342,9 @@ function tick(){if(!S)return;const left=Math.max(0,timeLeft());
 let CTL=null;
 function ctlUrl(extra){const u=CONFIG.resultsUrl;return u+(u.includes("?")?"&":"?")+extra;}
 async function pollCtl(){if(!CONFIG.resultsUrl)return;try{const r=await fetch(ctlUrl("control=1&team="+encodeURIComponent((S&&S.id)||"")));const d=await r.json();if(d&&typeof d==="object"&&!Array.isArray(d)&&!d.error)applyCtl(d);}catch(e){}}
-function applyCtl(d){CTL={startAt:d.startAt||null,endAt:d.endAt||null,msgs:Array.isArray(d.msgs)?d.msgs:[]};
+function applyCtl(d){
+  if(d.epoch&&S&&S.start<d.epoch){try{localStorage.removeItem(KEY);}catch(e){}S=null;CTL=null;document.getElementById("overlay").hidden=true;document.getElementById("resume").hidden=true;showMsgs();show("start");toast("Spelledaren har nollställt spelet. Skriv in ert lagnamn för att börja.");return;}
+  CTL={startAt:d.startAt||null,endAt:d.endAt||null,msgs:Array.isArray(d.msgs)?d.msgs:[]};
   if(S){const was=S.ctl&&S.ctl.endAt;S.ctl=CTL;
     if(S.ended&&S.endedBy==="time"&&timeLeft()>0){S.ended=false;S.endedBy=null;document.getElementById("overlay").hidden=true;if(current==="results"){renderMap();show("map");}toast("Spelledaren har gett er mer tid!");}
     else if(CTL.endAt&&was!==CTL.endAt&&!S.ended){toast("Spelledaren har ställt om klockan.");}
@@ -1888,7 +1897,14 @@ function admCtlInit(){
   arm(document.getElementById("ctlrelease"),"Säkert? Klicka igen",()=>{admPost({op:"release"});toast("Gemensam klocka släppt.");});
   document.getElementById("msgsend").onclick=()=>{const t=document.getElementById("msgtext").value.trim();if(!t){toast("Skriv ett meddelande först.");return;}
     admPost({op:"msg",to:document.getElementById("msgto").value,text:t.slice(0,200)}).then(ok=>{if(ok){document.getElementById("msgtext").value="";toast("Telegrammet skickat.");}});};
-  document.querySelectorAll("[data-quick]").forEach(b=>b.onclick=()=>{document.getElementById("msgtext").value=b.dataset.quick;});}
+  document.querySelectorAll("[data-quick]").forEach(b=>b.onclick=()=>{document.getElementById("msgtext").value=b.dataset.quick;});
+  const rc=document.getElementById("resetconfirm"),rb=document.getElementById("resetall");
+  rc.addEventListener("input",()=>{rb.disabled=rc.value.trim().toUpperCase()!=="NOLLSTÄLL";});
+  rb.onclick=async()=>{if(rc.value.trim().toUpperCase()!=="NOLLSTÄLL")return;rb.disabled=true;
+    const ok=await admPost({op:"reset"});if(!ok){rb.disabled=false;return;}
+    ADM.teams={};ADM.deleted={};ADM.events=[];ADM.snap=null;ADM.sel=null;ADM.award=0;ADM.prevTotals={};
+    try{["catigo-adm-codes","catigo-adm-deleted","catigo-adm-events","catigo-adm-snap"].forEach(k=>localStorage.removeItem(k));}catch(e){}
+    rc.value="";admRender();toast("Allt är nollställt. Hämtar på nytt…");setTimeout(admFetch,2000);};}
 /* ---------- genomgång ---------- */
 function admSolveOrder(){const pos=ANS.ord.pan_order.pos,keys=Object.keys(TASKS.pan_order.steps);return pos.map((h,i)=>keys.find(k=>H("pan_order:"+i+":"+k)===h));}
 function admSolveModel(){const roles={};Object.keys(TABLES).forEach(t=>{roles[t]=["fakta","dim","grav"].find(r=>ANS.roles[H("bib:"+t+":"+r)]);});
@@ -1999,7 +2015,11 @@ function route(){if(location.hash==="#admin"){if(!ADM.inited){ADM.inited=true;do
 window.addEventListener("hashchange",()=>{if(!route()&&current==="admin"){S?go():show("start");}});
 
 /* ---------- boot ---------- */
+function enterViaDoor(){const n=document.getElementById("teamname");if(n.value.trim()){const f=document.getElementById("startform");if(f.requestSubmit)f.requestSubmit();else f.onsubmit(new Event("submit"));return;}
+  const r=document.getElementById("resume");if(!r.hidden){document.getElementById("resumebtn").click();return;}
+  n.focus();toast("Skriv ert lagnamn först, sedan öppnas dörren.");}
 function start(){bindHouse(document.querySelector("#v-start .house"));
+  const door=document.querySelector("#v-start .house .door");if(door){door.addEventListener("click",enterViaDoor);door.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();enterViaDoor();}});}
   const prev=load();if(prev&&prev.team){document.getElementById("resume").hidden=false;document.getElementById("resumebtn").textContent="Fortsätt som "+prev.team;document.getElementById("resumebtn").onclick=()=>{S=prev;go();};}
   document.getElementById("startform").onsubmit=e=>{e.preventDefault();const n=document.getElementById("teamname").value.trim();if(!n)return;S=blank(n,Number(document.getElementById("duration").value));save();go();};
   document.getElementById("backbtn").onclick=()=>{renderMap();show("map");};
