@@ -510,6 +510,12 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
 .cmpradar text{font-family:var(--type);fill:var(--sky)}
 .teamnav{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .teamnav select{width:auto;min-width:220px}
+.pickgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:14px}
+.pickcard{text-align:left;display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;align-items:baseline;padding:12px 14px;background:linear-gradient(180deg,#152130,#0c141e);border:1px solid #2b3a4b;border-radius:2px;color:var(--ice)}
+.pickcard:hover,.pickcard:focus-visible{border-color:var(--pumpkin);box-shadow:0 0 18px rgba(247,125,25,.18)}
+.pickcard b{font-family:var(--heading);font-weight:400;font-size:1.2rem;color:var(--sand);overflow-wrap:anywhere}
+.pickcard .mono{font-size:.85rem;color:var(--smoothie)}
+.pickcard small{grid-column:1/-1;color:var(--muted);font-size:.85rem}
 .btn.ghost.admdel{border-color:rgba(224,103,90,.6);color:var(--blood-text)}
 .btn.ghost.admdel:hover{background:rgba(122,30,30,.25);color:#ffb3a8;border-color:var(--blood-text)}
 .teamhead{display:flex;flex-direction:column;gap:6px}
@@ -2083,7 +2089,10 @@ function admRender(){const list=admList();const now=Date.now();
   document.querySelectorAll("#admcompare .cmpcard").forEach(c=>c.onclick=()=>admOpen(c.dataset.team));
   // team detail
   const det=document.getElementById("admdetail");const p=ADM.teams[ADM.sel];
-  if(!p){det.innerHTML=`<p class="muted" style="font-size:1.05rem">Välj ett lag i topplistan eller under Jämför lag.</p>`;return;}
+  if(!p){det.innerHTML=list.length?`<div class="teamnav"><label for="admpick0" style="margin:0">Välj lag</label><select id="admpick0" style="width:auto;min-width:260px"><option value="">Välj ett lag…</option>${list.map((x,i)=>`<option value="${esc(x.teamId)}">#${i+1} ${esc(x.team)} · ${x.total} p</option>`).join("")}</select></div>
+    <div class="pickgrid">${list.map((x,i)=>`<button type="button" class="pickcard" data-pick="${esc(x.teamId)}"><span class="mono">#${i+1}</span><b>${esc(x.team)}</b><span class="mono">${x.total} p</span>${membersLine(x)?`<small>${esc(membersLine(x))}</small>`:""}</button>`).join("")}</div>`:`<p class="muted" style="font-size:1.05rem">Inga lag än. Tryck Hämta eller klistra in resultatkoder.</p>`;
+    const pk=document.getElementById("admpick0");if(pk)pk.onchange=e=>{if(e.target.value)admOpen(e.target.value);};
+    det.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>admOpen(b.dataset.pick));return;}
   const idx=list.findIndex(x=>x.teamId===p.teamId);const pc=admPcts(p);const pr=admProfile(p);const T_=Object.values(p.tasks||{});
   const mins=Math.round(Math.min(p.dur*60000,(p.ts-p.start))/60000);const wr=T_.reduce((a,t)=>a+(t.w||0),0);const hints=T_.filter(t=>t.h).length;
   const nav=`<div class="teamnav"><button type="button" class="btn ghost small" id="admprev" ${idx<=0?"disabled":""}>← Föregående</button><select id="admpick" aria-label="Välj lag">${list.map((x,i)=>`<option value="${esc(x.teamId)}" ${x.teamId===p.teamId?"selected":""}>#${i+1} ${esc(x.team)}</option>`).join("")}</select><button type="button" class="btn ghost small" id="admnext" ${idx>=list.length-1?"disabled":""}>Nästa →</button><span style="flex:1"></span><button type="button" class="btn ghost small" id="admtocmp">Till Jämför lag</button><button type="button" class="btn ghost small" id="admmsg">Skicka telegram</button><button type="button" class="btn ghost small admdel" id="admdel">Ta bort laget</button></div>`;
