@@ -449,6 +449,43 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
 @media (max-width:1100px){.livekpis{grid-template-columns:repeat(3,1fr)}.livegrid{grid-template-columns:1fr}}
 @media (max-width:560px){.livekpis{grid-template-columns:repeat(2,1fr)}.liverooms{grid-template-columns:repeat(2,1fr)}}
 
+/* admin: genomgång, prisutdelning, styrning, legend */
+.legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px 18px;font-size:.95rem;color:var(--ice);margin-top:4px}
+.legend div{display:flex;gap:10px;align-items:flex-start}
+.legend .k{flex:none;min-width:84px}
+.revroom{display:flex;flex-direction:column;gap:16px}
+.revroom > h3{font-family:var(--heading);font-size:2rem;color:var(--sand);margin-top:10px;border-bottom:2px solid var(--pumpkin);padding-bottom:4px}
+.revcard .meta{font-family:var(--mono);font-size:.85rem;color:var(--sky)}
+.revopt{display:grid;grid-template-columns:2em 1fr 180px 3.5em;gap:10px;align-items:center;padding:6px 8px;border:1px solid #2b3a4b;background:#070b11;margin-bottom:6px;font-size:1.02rem}
+.revopt .k{font-family:var(--type);color:var(--smoothie)}
+.revopt.right{border-color:var(--ecto);background:rgba(155,191,106,.12)}
+.revopt.trap{border-color:var(--blood-text);background:rgba(122,30,30,.18)}
+.revopt .track{height:10px;background:#05080c;border:1px solid #2b3a4b;overflow:hidden}.revopt .track i{display:block;height:100%;background:var(--sky)}
+.revopt.right .track i{background:var(--ecto)}.revopt.trap .track i{background:var(--blood-text)}
+.revopt b{font-family:var(--mono);text-align:right}
+.revtag{font-family:var(--mono);font-weight:600;font-size:.72rem;padding:1px 6px;margin-left:8px;white-space:nowrap}
+.revtag.r{background:rgba(155,191,106,.25);color:#d9f2bb}.revtag.t{background:var(--blood);color:#ffe1dc}
+.reverr{display:grid;grid-template-columns:1fr 70px;gap:10px;padding:6px 8px;border-left:3px solid var(--ecto);background:rgba(155,191,106,.07);margin-bottom:6px}
+.reverr.none{border-color:var(--blood-text);background:rgba(122,30,30,.15)}
+.reverr b{font-family:var(--mono);text-align:right;color:var(--smoothie)}
+#admtab-review:fullscreen,#admtab-award:fullscreen{background:#05090f;padding:28px;overflow:auto}
+.stage{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:end;min-height:520px;padding:20px 0}
+.podium{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:22px 16px;border:1px solid #2b3a4b;background:radial-gradient(ellipse at 50% 0%,rgba(247,125,25,.18),transparent 60%),linear-gradient(180deg,#152130,#0a1018);box-shadow:inset 0 0 0 4px #0a1018,inset 0 0 0 5px #223040,0 20px 40px rgba(0,0,0,.6);min-width:0}
+.podium.p1{order:2;min-height:500px}.podium.p2{order:1;min-height:440px}.podium.p3{order:3;min-height:400px}
+.podium .place{font-family:var(--display);font-size:4rem;line-height:.9;color:var(--mandarin);text-shadow:0 0 24px rgba(247,125,25,.5)}
+.podium .nm{font-family:var(--heading);font-size:clamp(1.6rem,3vw,2.4rem);color:var(--sand);overflow-wrap:anywhere;line-height:1.1}
+.podium .pts{font-family:var(--display);font-size:3rem;color:var(--smoothie);line-height:1}
+.podium .pts small{font-family:var(--type);font-size:.35em;color:var(--sky)}
+.podium .prof{font-family:var(--type);color:var(--ink);background:var(--paper);background-image:var(--noise-paper);padding:2px 10px}
+.podium svg{width:100%;max-width:300px;height:auto}
+.podium.hidden{justify-content:center}
+.podium.hidden .q{font-family:var(--display);font-size:7rem;color:#223040;text-shadow:none}
+.podium.p1:not(.hidden){box-shadow:inset 0 0 0 4px #0a1018,inset 0 0 0 5px var(--pumpkin),0 0 60px rgba(247,125,25,.3),0 20px 40px rgba(0,0,0,.6)}
+@media (prefers-reduced-motion:no-preference){.podium.reveal{animation:reveal 1.1s cubic-bezier(.2,.9,.3,1) both}@keyframes reveal{0%{opacity:0;transform:translateY(30px) scale(.92);filter:blur(6px) brightness(2)}60%{opacity:1;filter:blur(0) brightness(1.4)}100%{transform:none;filter:none}}}
+.msgrow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:8px 10px;border:1px solid #2b3a4b;background:#070b11;margin-top:8px}
+.msgrow .mono{font-size:.8rem;color:var(--sky);white-space:nowrap}
+@media (max-width:900px){.stage{grid-template-columns:1fr}.podium.p1,.podium.p2,.podium.p3{order:0;min-height:0}.revopt{grid-template-columns:2em 1fr 3.5em}.revopt .track{display:none}}
+
 /* admin: flikar, jämförelse, lagdetalj */
 .admtabs{display:flex;gap:4px;border-bottom:2px solid var(--pumpkin);flex-wrap:wrap}
 .admtabs button{font-family:var(--type);font-size:1rem;letter-spacing:.03em;padding:.55em 1.2em .45em;background:linear-gradient(180deg,#152130,#0c141e);border:1px solid #2b3a4b;border-bottom:0;color:var(--sky);border-radius:0;clip-path:polygon(6% 0,94% 0,100% 100%,0 100%)}
@@ -542,6 +579,30 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
 .syncdot{font-size:.78rem}
 .tcol{font-size:.8rem}
 .relrow .ends .mono{color:#b9c8d6}
+
+
+/* felklick: förbannelse och spegelns ljus */
+.task.cursed table.reg{filter:grayscale(.7) brightness(.75);cursor:wait}
+.task.cursed table.reg td button{cursor:wait}
+.lives{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lives .mono{font-size:.85rem;color:var(--sky)}
+.candle{position:relative;width:12px;height:26px;background:linear-gradient(180deg,#efe5cc,#c9b78f);border-radius:1px;margin-top:10px}
+.candle::before{content:"";position:absolute;left:50%;top:-13px;width:10px;height:14px;margin-left:-5px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(ellipse at 50% 70%,#fff3c4,var(--smoothie) 45%,var(--pumpkin) 80%,transparent 82%);box-shadow:0 0 14px 4px rgba(247,125,25,.45)}
+.candle.out{filter:grayscale(.8) brightness(.6)}
+.candle.out::before{background:none;box-shadow:none;border-left:1px solid #5b6e82;width:0;height:10px;top:-10px;border-radius:0}
+@media (prefers-reduced-motion:no-preference){.candle:not(.out)::before{animation:flame 1.8s ease-in-out infinite}@keyframes flame{0%,100%{transform:scale(1) rotate(-2deg)}50%{transform:scale(1.08,.95) rotate(2deg)}}}
+.mirror.cracked svg{filter:grayscale(.6) brightness(.85)}
+.mirror.cracked .hs{cursor:not-allowed}
+.mirror.cracked::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><g fill='none' stroke='%2309111D' stroke-width='.5' opacity='.75'><path d='M52 46 L20 0 M52 46 L0 30 M52 46 L5 80 M52 46 L40 100 M52 46 L78 100 M52 46 L100 70 M52 46 L100 22 M52 46 L70 0'/><path d='M44 40 L58 38 L62 52 L48 56 Z'/><path d='M36 30 L66 28 L72 60 L40 66 Z' opacity='.6'/></g></svg>") center/100% 100% no-repeat}
+
+
+/* telegram från spelledaren */
+.telegrams{position:fixed;z-index:55;top:calc(78px + env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:10px;width:min(380px,calc(100% - 32px))}
+.telegram{--fg:var(--ink);--sand:var(--ink);color:var(--ink);background-color:var(--paper);background-image:var(--stains),var(--noise-paper);border-left:6px solid var(--pumpkin);padding:12px 14px;box-shadow:0 16px 36px rgba(0,0,0,.7);clip-path:polygon(0 0,100% 2%,99% 100%,1% 97%);display:flex;flex-direction:column;gap:8px;transform:rotate(-.6deg)}
+.tg-head{font-family:var(--mono);font-weight:600;font-size:.74rem;letter-spacing:.04em;color:var(--rust);text-transform:uppercase}
+.tg-body{font-family:var(--type);font-size:1.15rem;line-height:1.35}
+.telegram .btn.ghost{align-self:flex-start;color:var(--ink);border-color:var(--ink);box-shadow:none}
+@media (prefers-reduced-motion:no-preference){.telegram{animation:tgin .6s cubic-bezier(.2,.9,.3,1.2) both}@keyframes tgin{from{transform:translateX(120%) rotate(4deg);opacity:0}to{transform:rotate(-.6deg);opacity:1}}}
 
 /* ---------- responsive ---------- */
 @media (min-width:1600px){body{font-size:20px}.wrap{max-width:1360px}.hud-in{max-width:1360px}}
@@ -686,8 +747,8 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
     </div>
     <div class="rules">
       <div class="rule"><div class="big">6 rum</div><p>Varje rum är ett Catigo-område. Ni väljer ordning och kan hoppa över uppgifter och lämna ett rum när som helst.</p></div>
-      <div class="rule"><div class="big">Bas & Avancerat</div><p>Basuppgifter ger 2–4 p, avancerade 3–6 p. Fel svar kostar 1 p (max 2 per uppgift).</p></div>
-      <div class="rule"><div class="big">Förbannelse</div><p>Fel svar i fritext och kod förbannar er i 20 sekunder. Flervalsfrågor har ett enda försök.</p></div>
+      <div class="rule"><div class="big">Bas & Avancerat</div><p>Basuppgifter ger 2–4 p, avancerade 3–6 p. Fel svar i fritext och kod kostar 1 p (max 2 per uppgift). Fel på en flervalsfråga ger 0 p.</p></div>
+      <div class="rule"><div class="big">Förbannelse</div><p>Fel svar i fritext och kod förbannar er i 20 sekunder. Felklick i Arkivet förbannar er allt längre. Varje spegel tål 3 felklick. Flervalsfrågor har ett enda försök, och ett fel svar ger 0 p men inget avdrag.</p></div>
       <div class="rule"><div class="big" style="color:#b9a2ff">Kristallkulan</div><p>Er AI-joker. En gång per lag får ni använda AI på en uppgift. Kostar 2 p. Annars är bara sökmotorer tillåtna.</p></div>
     </div>
   </div>
@@ -776,12 +837,25 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
       <button type="button" role="tab" data-admtab="board">Topplista</button>
       <button type="button" role="tab" data-admtab="compare">Jämför lag</button>
       <button type="button" role="tab" data-admtab="team">Lagdetalj</button>
+      <button type="button" role="tab" data-admtab="review">Genomgång</button>
+      <button type="button" role="tab" data-admtab="award">Prisutdelning</button>
+      <button type="button" role="tab" data-admtab="ctl">Styrning</button>
     </nav>
     <div id="admtab-live" class="admpane">
       <div class="livebar"><span class="livedot" id="livedot"></span><span class="mono" id="livestamp">Väntar på första hämtningen…</span><span style="flex:1"></span><button type="button" class="btn ghost small" id="livefs">Helskärm</button></div>
       <div class="livekpis" id="livekpis"></div>
       <div class="livegrid">
-        <div class="livecol"><div class="task"><div class="taskhead"><span class="chip">Lagen just nu</span><h3>Status per lag</h3></div><div class="scroll" id="liveteams"></div></div>
+        <div class="livecol"><div class="task"><div class="taskhead"><span class="chip">Lagen just nu</span><h3>Status per lag</h3></div><div class="scroll" id="liveteams"></div>
+          <div class="legend">
+            <div><span class="k"><span class="delta" style="font-family:var(--mono);color:var(--ecto)">+5</span></span><span>Poäng sedan förra hämtningen.</span></div>
+            <div><span class="k"><span class="roomchip">Kryptan</span></span><span>Rummet laget är i just nu.</span></div>
+            <div><span class="k"><span class="roomchip map">Huset</span></span><span>Laget står på husets karta och väljer rum.</span></div>
+            <div><span class="k"><span class="roomchip results">Resultatsidan</span></span><span>Laget har avslutat eller nått midnatt.</span></div>
+            <div><span class="k"><span class="flag ai">Kula</span></span><span>Laget har använt kristallkulan (AI-jokern).</span></div>
+            <div><span class="k"><span class="flag warn">Kämpar ×2</span></span><span>Antal olösta uppgifter med minst 2 felsvar (Arkivet: 4 felklick, spegel: 2).</span></div>
+            <div><span class="k"><span class="mono" style="color:var(--blood-text)">7 min</span></span><span>Senast aktiv i rött: inget skickat på 5 minuter eller mer. Att läsa eller fundera räknas inte som aktivitet.</span></div>
+            <div><span class="k"><span class="tleft low" style="display:inline-block"><i style="width:30%"></i></span></span><span>Tid kvar. Röd under 10 minuter.</span></div>
+          </div></div>
           <div class="task"><div class="taskhead"><span class="chip">Rummen</span><h3>Var är lagen?</h3></div><div class="liverooms" id="liverooms"></div></div></div>
         <div class="livecol"><div class="task"><div class="taskhead"><span class="chip adv">Behöver hjälp</span><h3>Varningar</h3></div><div id="livealerts"></div></div>
           <div class="task"><div class="taskhead"><span class="chip">Logg</span><h3>Händelser</h3></div><div class="livefeed" id="livefeed"></div></div>
@@ -794,10 +868,32 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
     </div>
     <div id="admtab-compare" class="admpane" hidden><div class="cmpgrid" id="admcompare"></div></div>
     <div id="admtab-team" class="admpane" hidden><div id="admdetail"></div></div>
+    <div id="admtab-review" class="admpane" hidden>
+      <div class="livebar"><label for="revroom" style="margin:0">Rum</label><select id="revroom" style="width:auto"><option value="">Alla rum</option></select><span style="flex:1"></span><button type="button" class="btn ghost small" id="revfs">Helskärm</button></div>
+      <div id="review"></div>
+    </div>
+    <div id="admtab-award" class="admpane" hidden>
+      <div class="livebar"><button type="button" class="btn" id="awnext">Avslöja plats 3</button><button type="button" class="btn ghost small" id="awreset">Börja om</button><span style="flex:1"></span><button type="button" class="btn ghost small" id="awfs">Helskärm</button></div>
+      <div class="stage" id="awstage"></div>
+    </div>
+    <div id="admtab-ctl" class="admpane" hidden>
+      <div class="task"><div class="taskhead"><span class="chip">Klocka</span><h3>Gemensam midnatt</h3></div>
+        <p class="q" id="ctlstatus">Hämtar läget…</p>
+        <div class="answerrow"><div><label for="ctldur">Speltid</label><select id="ctldur" style="width:auto"><option value="90">90 min</option><option value="75">75 min</option><option value="60">60 min</option><option value="45">45 min</option></select></div>
+          <button type="button" class="btn" id="ctlstart">Starta för alla</button><button type="button" class="btn ghost" id="ctlplus">+5 minuter</button><button type="button" class="btn ghost" id="ctlminus">−5 minuter</button><button type="button" class="btn ghost admdel" id="ctlend">Avsluta för alla</button><button type="button" class="btn ghost small" id="ctlrelease">Släpp gemensam klocka</button></div>
+        <p class="muted" style="font-size:.95rem">När klockan är gemensam slår midnatt samtidigt för alla lag, oavsett när de skrev in sitt namn. Lagens klockor synkas inom cirka 20 sekunder. "Släpp" går tillbaka till att varje lag har sin egen speltid från start.</p></div>
+      <div class="task"><div class="taskhead"><span class="chip">Telegram</span><h3>Skicka meddelande</h3></div>
+        <div class="answerrow"><div style="min-width:220px"><label for="msgto">Till</label><select id="msgto"></select></div></div>
+        <label for="msgtext">Meddelande (max 200 tecken)</label><textarea id="msgtext" rows="3" maxlength="200" placeholder="Till exempel: 10 minuter kvar till midnatt!"></textarea>
+        <div class="answerrow"><button type="button" class="btn" id="msgsend">Skicka telegram</button>
+          <button type="button" class="btn ghost small" data-quick="15 minuter kvar till midnatt!">15 min kvar</button><button type="button" class="btn ghost small" data-quick="5 minuter kvar! Glöm inte Tornet.">5 min kvar</button><button type="button" class="btn ghost small" data-quick="Tips: läs tidszonerna i Pannrummets logg noga.">Tips Pannrummet</button><button type="button" class="btn ghost small" data-quick="Tips: kristallkulan (AI-jokern) kan bara användas en gång. Välj klokt!">Tips kristallkulan</button></div>
+        <div id="msglist"></div></div>
+    </div>
     <div class="task"><div class="taskhead"><span class="chip">Reserv</span><h3>Klistra in resultatkoder</h3></div><textarea id="admcodes" rows="4" placeholder="En eller flera koder, en per rad"></textarea><div class="answerrow"><button class="btn ghost" id="admaddcodes" type="button">Lägg till koder</button><button class="btn ghost small" id="admclear" type="button">Rensa listan</button></div></div>
   </div>
 </section>
 
+<div class="telegrams" id="telegrams" aria-live="polite"></div>
 <div class="toast" id="toast" hidden></div>
 <div class="overlay" id="overlay" hidden><div><svg width="80" height="80" class="ghostfloat" style="fill:var(--sand)"><use href="#ghost"/></svg><h2>Midnatt!</h2><p class="muted">Klockan har slagit tolv och styrelsen väntar. Dags att se hur ni klarade er.</p><button class="btn" id="overlaybtn" type="button">Visa resultatet</button></div></div>
 
@@ -1063,7 +1159,7 @@ const ROOMS = [
 
 /* ---------- tasks ---------- */
 const TASKS = {
-  ark:{room:"arkivet",type:"click",lvl:"Bas + Avancerat",title:"Fånga spökena i leverantörsregistret",cap:4,
+  ark:{room:"arkivet",type:"click",lvl:"Bas + Avancerat",title:"Fånga spökena i leverantörsregistret",cap:9999,floor0:true,
        hint:"Läs varje tecken, inte bara orden: bokstäver som liknar siffror, toppdomäner, decimaltecken och datum som inte finns. För regel 10: Luhn-algoritmen dubblar varannan siffra från vänster i de nio första siffrorna."},
   ark_dim:{room:"arkivet",type:"mcq",lvl:"Bas",pts:3,title:"Vilken dimension?",
        q:"En leverantör finns två gånger i registret under olika namn. Vilken datakvalitetsdimension bryter det främst mot?",
@@ -1140,11 +1236,11 @@ const TASKS = {
        spec:["Deduplicera som i dedupe().","Ta bort rader där <code>qty &lt;= 0</code> eller där <code>type</code> inte är exakt <code>'sale'</code> eller <code>'return'</code>.","<code>store</code>: ta bort blanksteg runt och gör som <code>str.capitalize()</code>, alltså <code>\"  stockholm \"</code> → <code>\"Stockholm\"</code>.","<code>amount</code> = qty × unit_price, negativt för returer, avrundat till 2 decimaler med <code>round()</code>.","<code>modified_utc</code>: tidpunkten i UTC som text, <code>\"ÅÅÅÅ-MM-DD HH:MM:SS\"</code>.","Returnera dicts med exakt nycklarna <code>sale_id, store, type, amount, modified_utc</code>, sorterade på sale_id."],
        hint:"Bygg vidare på dedupe(). För UTC: dt.astimezone(timezone.utc).strftime(\"%Y-%m-%d %H:%M:%S\")."},
 
-  spe1:{room:"spegelsalen",type:"hotspot",chart:"bar",lvl:"Bas",title:"Spegel 1: Försäljning per butik",cap:2,
+  spe1:{room:"spegelsalen",type:"hotspot",chart:"bar",lvl:"Bas",title:"Spegel 1: Försäljning per butik",cap:3,floor0:true,lives:3,
        hint:"Titta på axlarna och det finstilta. Vad lovar titeln, och vad visar resten?"},
-  spe2:{room:"spegelsalen",type:"hotspot",chart:"kpi",lvl:"Avancerat",title:"Spegel 2: KPI-panelen",cap:2,
+  spe2:{room:"spegelsalen",type:"hotspot",chart:"kpi",lvl:"Avancerat",title:"Spegel 2: KPI-panelen",cap:3,floor0:true,lives:3,
        hint:"Läs formlerna under varje KPI. Stämmer de med rubriken? Och vilka färger betyder bra och dåligt?"},
-  spe3:{room:"spegelsalen",type:"hotspot",chart:"line",lvl:"Bas",title:"Spegel 3: Kyla och godis",cap:2,
+  spe3:{room:"spegelsalen",type:"hotspot",chart:"line",lvl:"Bas",title:"Spegel 3: Kyla och godis",cap:3,floor0:true,lives:3,
        hint:"Läs båda y-axlarna noga, räkna dagarna mellan x-etiketterna och jämför förklaringen med linjerna."},
 
   tor_share:{room:"tornet",type:"mcq",lvl:"Bas",pts:3,title:"Sista veckans makt",
@@ -1189,7 +1285,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}sched
 /* ---------- results sync ---------- */
 function payload(){if(!S.id)S.id=Math.random().toString(36).slice(2,12);const areas={};ROOMS.forEach(r=>areas[r.id]=Math.round(roomPct(r.id)*100));
   const tasks={};Object.keys(TASKS).forEach(k=>{const s=S.t[k];if(!s)return;if(!(s.done||s.earned||s.wrong||s.hint||s.joker||(s.found&&s.found.length)||(s.seq&&s.seq.length)||(s.rels&&s.rels.length)||Object.keys(s.place||{}).length))return;const o={n:net(k),m:taskMax(k),d:s.done?1:0,ok:s.ok?1:0,w:s.wrong,h:s.hint?1:0,j:s.joker?1:0};
-    if(s.answer)o.a=s.answer;if(s.pick)o.p=s.pick;if(s.found&&s.found.length)o.f=s.found.length;if(s.summary)o.s=s.summary;tasks[k]=o;});
+    if(s.answer)o.a=s.answer;if(s.pick)o.p=s.pick;if(s.found&&s.found.length)o.f=s.found.length;if(s.summary)o.s=s.summary;if(s.cells&&s.cells.length)o.c=s.cells;if(s.cracked)o.x=1;tasks[k]=o;});
   return {v:2,room:current==="room"?currentRoom:current,teamId:S.id,team:S.team,start:S.start,dur:S.dur,ended:!!(S.ended||timeLeft()<=0),ts:Date.now(),total:total(),max:grandMax(),areas,joker:S.joker,tasks,py:(S.pyDraft||"").slice(0,4000)};}
 function b64e(str){const b=new TextEncoder().encode(str);let s="";for(let i=0;i<b.length;i++)s+=String.fromCharCode(b[i]);return btoa(s);}
 function b64d(str){const bin=atob(str);const b=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)b[i]=bin.charCodeAt(i);return new TextDecoder().decode(b);}
@@ -1208,8 +1304,8 @@ function taskMax(id){const t=TASKS[id];
   if(t.type==="click"||t.type==="hotspot")return ANS.cnt[id].reduce((a,b)=>a+b,0);
   if(t.type==="model")return Object.keys(TABLES).length+ANS.relCount;
   return t.pts;}
-function cap(id){const t=TASKS[id];return t.cap!=null?t.cap:(t.type==="mcq"||t.type==="order"||t.type==="model")?1:2;}
-function net(id){const s=S.t[id];if(!s)return 0;return s.earned-Math.min(s.wrong,cap(id))-(s.hint?1:0)-(s.joker?2:0);}
+function cap(id){const t=TASKS[id];return t.cap!=null?t.cap:t.type==="mcq"?0:(t.type==="order"||t.type==="model")?1:2;}
+function net(id){const s=S.t[id];if(!s)return 0;let b=s.earned-Math.min(s.wrong,cap(id));if(TASKS[id].floor0)b=Math.max(0,b);return b-(s.hint?1:0)-(s.joker?2:0);}
 function roomMax(r){return ROOM_TASKS(r).reduce((a,k)=>a+taskMax(k),0);}
 function roomNet(r){return ROOM_TASKS(r).reduce((a,k)=>a+net(k),0);}
 function roomPct(r){return Math.max(0,roomNet(r))/roomMax(r);}
@@ -1221,17 +1317,34 @@ function towerOpen(){return ROOMS.filter(r=>r.id!=="tornet"&&roomStarted(r.id)).
 function locked(){return S.ended||timeLeft()<=0;}
 
 /* ---------- time ---------- */
-function timeLeft(){return S.dur*60-(Date.now()-S.start)/1000;}
+function timeLeft(){const c=(S&&S.ctl)||CTL;if(c&&c.endAt)return (c.endAt-Date.now())/1000;return S.dur*60-(Date.now()-S.start)/1000;}
 function tick(){if(!S)return;const left=Math.max(0,timeLeft());
   const mid=new Date();mid.setHours(24,0,0,0);const shown=new Date(mid.getTime()-left*1000);
   document.getElementById("hud-clock").textContent=String(shown.getHours()).padStart(2,"0")+":"+String(shown.getMinutes()).padStart(2,"0");
   document.getElementById("hud-left").textContent=left>0?("Midnatt om "+Math.ceil(left/60)+" min"):"Midnatt";
   document.getElementById("hud-clockwrap").classList.toggle("late",left<600);
-  if(left<=0&&!S.ended){S.ended=true;save();document.getElementById("overlay").hidden=false;}
+  if(left<=0&&!S.ended){S.ended=true;S.endedBy="time";save();document.getElementById("overlay").hidden=false;}
   document.querySelectorAll("[data-cool]").forEach(el=>{const id=el.dataset.cool,s=S.t[id];const r=s?Math.ceil((s.until-Date.now())/1000):0;
-    if(r>0){el.textContent="Förbannade! Ni kan svara igen om "+r+" s.";el.className="feedback bad";}
+    const tk=el.closest(".task");if(tk)tk.classList.toggle("cursed",r>0);
+    if(r>0){el.textContent=(id==="ark"?"Förbannade! Ni kan klicka igen om ":"Förbannade! Ni kan svara igen om ")+r+" s.";el.className="feedback bad";}
     else if(el.textContent.startsWith("Förbannade")){el.textContent="";document.querySelectorAll(`[data-coolctl="${id}"]`).forEach(c=>c.disabled=false);}});
 }
+
+
+/* ---------- gemensam klocka & telegram från spelledaren ---------- */
+let CTL=null;
+function ctlUrl(extra){const u=CONFIG.resultsUrl;return u+(u.includes("?")?"&":"?")+extra;}
+async function pollCtl(){if(!CONFIG.resultsUrl)return;try{const r=await fetch(ctlUrl("control=1&team="+encodeURIComponent((S&&S.id)||"")));const d=await r.json();if(d&&typeof d==="object"&&!Array.isArray(d)&&!d.error)applyCtl(d);}catch(e){}}
+function applyCtl(d){CTL={startAt:d.startAt||null,endAt:d.endAt||null,msgs:Array.isArray(d.msgs)?d.msgs:[]};
+  if(S){const was=S.ctl&&S.ctl.endAt;S.ctl=CTL;
+    if(S.ended&&S.endedBy==="time"&&timeLeft()>0){S.ended=false;S.endedBy=null;document.getElementById("overlay").hidden=true;if(current==="results"){renderMap();show("map");}toast("Spelledaren har gett er mer tid!");}
+    else if(CTL.endAt&&was!==CTL.endAt&&!S.ended){toast("Spelledaren har ställt om klockan.");}
+    try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+  showMsgs();if(S)tick();}
+function showMsgs(){const box=document.getElementById("telegrams");if(!box)return;if(!S||!CTL){box.innerHTML="";return;}
+  const gone=new Set(S.dismissed||[]);const list=CTL.msgs.filter(m=>!gone.has(m.id)&&(m.to==="all"||m.to===S.id));
+  box.innerHTML=list.slice(-3).map(m=>`<div class="telegram" role="status"><div class="tg-head">Telegram från spelledaren · ${hhmm(m.ts)}${m.to!=="all"?" · bara till er":""}</div><div class="tg-body">${esc(m.text)}</div><button type="button" class="btn ghost small" data-dismiss="${esc(m.id)}">Uppfattat</button></div>`).join("");
+  box.querySelectorAll("[data-dismiss]").forEach(b=>b.onclick=()=>{S.dismissed=(S.dismissed||[]).concat([b.dataset.dismiss]);try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}showMsgs();});}
 
 /* ---------- views ---------- */
 let current="start", currentRoom=null;
@@ -1281,7 +1394,7 @@ function taskHTML(id){const t=TASKS[id],s=T(id);let inner="";
 function matCard(chip,title,body){return `<article class="task mat"><div class="taskhead"><span class="chip">${chip}</span><h3>${title}</h3></div>${body}</article>`;}
 
 function mcqHTML(id){const t=TASKS[id],s=T(id);const keys=Object.keys(t.opts);
-  return `<p class="q">${esc(t.q)}</p><div class="opts">${keys.map((k,i)=>{let c="opt";if(s.pick===k)c+=s.ok?" right":" wrong";
+  return `<p class="q">${esc(t.q)}</p><p class="muted" style="font-size:.9rem;margin-top:-8px">Ett försök. Rätt svar ger ${t.pts} p, fel svar ger 0 p.</p><div class="opts">${keys.map((k,i)=>{let c="opt";if(s.pick===k)c+=s.ok?" right":" wrong";
     return `<button class="${c}" data-mcq="${id}" data-opt="${k}" type="button" ${s.done||locked()?"disabled":""}><span class="k">${"ABCD"[i]}</span><span>${esc(t.opts[k])}</span></button>`;}).join("")}</div>`;}
 function inputHTML(id){const t=TASKS[id],s=T(id);const cool=s.until>Date.now();
   if(s.done)return `<p class="q">${esc(t.q)}</p><p class="mono" style="color:var(--ok)">Svar: ${esc(s.answer||"")}</p>`;
@@ -1294,7 +1407,7 @@ function arkHTML(){const s=T("ark");const caught=new Set(s.cells||[]);
   let tbl='<div class="scroll"><table class="reg"><thead><tr><th>#</th>'+REG_COLS.map(c=>`<th>${c[1]}</th>`).join("")+"</tr></thead><tbody>";
   REG.forEach((row,ri)=>{tbl+=`<tr><td class="rn">${ri+1}</td>`+row.map((v,ci)=>{const cell="r"+(ri+1)+"-"+REG_COLS[ci][0];return `<td class="${caught.has(cell)?"caught":""}"><button type="button" data-cell="${cell}" ${locked()?"disabled":""}>${esc(v)||"&nbsp;"}</button></td>`;}).join("")+"</tr>";});
   tbl+="</tbody></table></div>";
-  return `<div class="contract">${CONTRACT.map(c=>`<div>${esc(c)}</div>`).join("")}</div>${ghosts("ark","fångade")}${tbl}${notes("ark")}<p class="muted" style="font-size:.85rem">Basfel ger 2 p, avancerade fel 3 p. Felklick kostar 1 p (max 4).</p>`;}
+  return `<div class="contract">${CONTRACT.map(c=>`<div>${esc(c)}</div>`).join("")}</div>${ghosts("ark","fångade")}${tbl}${notes("ark")}<p class="muted" style="font-size:.85rem">Basfel ger 2 p, avancerade fel 3 p. Varje felklick kostar 1 p och förbannar er: 3, 6, 12 och sedan 20 sekunder. Klickuppgiften kan inte gå under 0 p.</p>`;}
 
 /* ---------- biblioteket: model builder ---------- */
 function roleOf(place){if(!place)return null;if(place==="grav")return "grav";return SLOTS[place].role;}
@@ -1442,9 +1555,10 @@ SELECT col1, col2, col3, col4, col5, col6 FROM ext.kassa_csv;
 
 /* ---------- spegelsalen ---------- */
 function speHTML(id){const s=T(id);const cs=new Set(s.cells||[]),miss=new Set(s.misses||[]);
-  const g=(hid,content,box)=>`<g class="hs${cs.has(hid)?" caught":""}${miss.has(hid)?" miss":""}" data-hs="${id}|${hid}" tabindex="${locked()?-1:0}" role="button" aria-label="${hid}">${content}<rect class="hit" x="${box[0]}" y="${box[1]}" width="${box[2]}" height="${box[3]}" rx="4"/></g>`;
+  const g=(hid,content,box)=>`<g class="hs${cs.has(hid)?" caught":""}${miss.has(hid)?" miss":""}" data-hs="${id}|${hid}" tabindex="${locked()||s.cracked?-1:0}" role="button" aria-label="${hid}">${content}<rect class="hit" x="${box[0]}" y="${box[1]}" width="${box[2]}" height="${box[3]}" rx="4"/></g>`;
   const svg=CHARTS[TASKS[id].chart](g);
-  return `<p class="q">Klicka på de delar av rapporten som vilseleder. Varje hittad förvrängning ger 2 p.</p><div class="mirror">${svg}</div>${ghosts(id,"förvrängningar hittade")}${notes(id)}`;}
+  const lives=TASKS[id].lives,lit=Math.max(0,lives-s.wrong);const candles=`<div class="lives" aria-label="${lit} av ${lives} försök kvar">${Array.from({length:lives},(_,i)=>`<span class="candle${i<lit?"":" out"}"></span>`).join("")}<span class="mono">${s.cracked?"Spegeln har spruckit":lit+" av "+lives+" försök kvar"}</span></div>`;
+  return `<p class="q">Klicka på de delar av rapporten som vilseleder. Varje hittad förvrängning ger 2 p. Spegeln tål 3 felklick (−1 p styck) innan den spricker.</p>${candles}<div class="mirror${s.cracked?" cracked":""}">${svg}</div>${ghosts(id,"förvrängningar hittade")}${notes(id)}`;}
 const sv=n=>n.toLocaleString("sv-SE");
 const CHARTS={
  bar:g=>{const vals=[["Linköping",4820,"#8CA4BC"],["Norrköping",4410,"#D4501A"],["Stockholm",5960,"#8CA4BC"],["Uppsala",3980,"#D4501A"]];
@@ -1590,7 +1704,7 @@ function feedback(id,msg,ok){const el=document.getElementById("fb-"+id);if(el){e
 
 function answerMCQ(id,opt){const s=T(id);if(s.done||locked())return;const a=ANS.mcq[id];s.pick=opt;s.done=true;
   if(H(id+":"+opt)===a.h){s.ok=true;s.earned=TASKS[id].pts;s.explain=dec(a.x,id+":"+opt);toast("Rätt! +"+TASKS[id].pts+" p");}
-  else{s.ok=false;s.wrong=1;toast("Fel svar. Uppgiften är stängd.");}
+  else{s.ok=false;s.wrong=1;toast("Fel svar, 0 p. Uppgiften är stängd.");}
   commit();}
 function canon(id,raw){const a=ANS.inp[id];let v=String(raw).trim().toLowerCase();
   if(a.k==="num"){v=v.replace(/kr|sek|:-/g,"").replace(/\s| /g,"").replace(",",".");const n=Number(v);if(!isFinite(n)||v==="")return null;return Math.round(n*Math.pow(10,a.d)).toString();}
@@ -1601,14 +1715,20 @@ function answerInput(id){const s=T(id);if(s.done||locked()||s.until>Date.now())r
   if(a.hs[h]!==undefined){s.done=true;s.ok=true;s.earned=TASKS[id].pts;s.answer=raw.trim();s.explain=dec(a.hs[h],id+":"+c);toast("Rätt! +"+TASKS[id].pts+" p");commit();}
   else{s.wrong++;s.until=Date.now()+20000;save();hud();document.querySelectorAll(`[data-coolctl="${id}"]`).forEach(c=>c.disabled=true);tick();
     document.getElementById("task-"+id).querySelector(".pts").textContent=net(id)+" / "+taskMax(id)+" p";}}
-function clickCell(tid,cell,el){const s=T(tid);if(locked())return;s.cells=s.cells||[];s.notes=s.notes||[];s.misses=s.misses||[];if(s.cells.includes(cell))return;
+const CURSE=[3,6,12,20];
+function clickCell(tid,cell,el){const s=T(tid);const TT=TASKS[tid];if(locked())return;s.cells=s.cells||[];s.notes=s.notes||[];s.misses=s.misses||[];if(s.cells.includes(cell))return;
+  if(TT.type==="hotspot"&&s.cracked){toast("Spegeln har spruckit. Gå vidare till nästa.");return;}
+  if(tid==="ark"&&s.until>Date.now()){toast(`Förbannade! Ni kan klicka igen om ${Math.ceil((s.until-Date.now())/1000)} s.`);return;}
   const hit=ANS.clk[tid][H(tid+":"+cell)];
   if(hit){if(s.found.includes(hit.i)){s.cells.push(cell);commit();toast(tid==="ark"?"Samma spöke som ni redan fångat, bara en annan cell.":"Det är samma förvrängning som ni redan hittat.");return;}
     s.found.push(hit.i);s.cells.push(cell);s.earned+=ANS.cnt[tid][hit.i];s.notes.push(dec(hit.x,tid+":"+cell));
     if(s.found.length===ANS.cnt[tid].length){s.done=true;s.ok=true;}
     toast((tid==="ark"?"Spöke fångat! +":"Förvrängning krossad! +")+ANS.cnt[tid][hit.i]+" p");commit();}
-  else{s.wrong++;if(!s.misses.includes(cell))s.misses.push(cell);save();hud();el.classList.remove("miss");void el.getBoundingClientRect();el.classList.add("miss");
-    toast(s.wrong<=cap(tid)?"Bu! Inget spöke där. −1 p":"Inget spöke där. (Max avdrag nått.)");
+  else{s.wrong++;if(!s.misses.includes(cell))s.misses.push(cell);
+    if(TT.type==="hotspot"){const left=TT.lives-s.wrong;if(left<=0){s.cracked=true;s.done=true;s.ok=false;toast("Spegeln sprack och är nu låst. Gå vidare till nästa spegel.");}else toast(`Fel spegelbit. −1 p. ${left} ${left===1?"försök":"försök"} kvar.`);commit();return;}
+    const sec=CURSE[Math.min(s.wrong,CURSE.length)-1];s.until=Date.now()+sec*1000;
+    save();hud();el.classList.remove("miss");void el.getBoundingClientRect();el.classList.add("miss");
+    toast(`Bu! Inget spöke där. −1 p och förbannade i ${sec} s.`);tick();
     document.getElementById("task-"+tid).querySelector(".pts").textContent=net(tid)+" / "+taskMax(tid)+" p";}}
 function lockOrder(){const s=T("pan_order");if(s.done||locked())return;const a=ANS.ord.pan_order;
   s.posok=s.seq.map((k,i)=>a.pos[i]===H("pan_order:"+i+":"+k));const n=s.posok.filter(Boolean).length;
@@ -1681,7 +1801,7 @@ async function admFetch(){const url=document.getElementById("admurl").value.trim
   st.textContent="Hämtar…";
   try{const r=await fetch(url+(url.includes("?")?"&":"?")+"key="+encodeURIComponent(key));const d=await r.json();
     if(!Array.isArray(d)){st.textContent="Servern svarade: "+(d&&d.error?d.error:"oväntat format")+". Kontrollera nyckeln.";return;}
-    const before={};Object.values(ADM.teams).forEach(x=>before[x.teamId]=x);Object.keys(ADM.teams).forEach(k=>{if(ADM.teams[k]._srv)delete ADM.teams[k];});d.forEach(x=>{x._srv=1;admMerge(x);});ADM.prevTotals={};Object.values(before).forEach(x=>ADM.prevTotals[x.teamId]=x.total);admDiff(before);ADM.lastOk=Date.now();ADM.err=false;const t=new Date();st.textContent=`Hämtat ${d.length} lag ${String(t.getHours()).padStart(2,"0")}:${String(t.getMinutes()).padStart(2,"0")}:${String(t.getSeconds()).padStart(2,"0")}.`;admRender();}
+    const before={};Object.values(ADM.teams).forEach(x=>before[x.teamId]=x);Object.keys(ADM.teams).forEach(k=>{if(ADM.teams[k]._srv)delete ADM.teams[k];});d.forEach(x=>{x._srv=1;admMerge(x);});ADM.prevTotals={};Object.values(before).forEach(x=>ADM.prevTotals[x.teamId]=x.total);admDiff(before);ADM.lastOk=Date.now();ADM.err=false;admFetchCtl();const t=new Date();st.textContent=`Hämtat ${d.length} lag ${String(t.getHours()).padStart(2,"0")}:${String(t.getMinutes()).padStart(2,"0")}:${String(t.getSeconds()).padStart(2,"0")}.`;admRender();}
   catch(e){ADM.err=true;admLive();st.textContent="Kunde inte hämta: "+(e.message||e)+". Är URL:en rätt och webbappen delad med ”Alla”? (I Claude-förhandsvisningen blockeras externa anrop; använd GitHub Pages-versionen.)";}}
 function admList(){return Object.values(ADM.teams).sort((a,b)=>b.total-a.total||a.ts-b.ts);}
 function admPcts(p){return ROOMS.map(r=>({r,p:Math.max(0,Math.min(1,((p.areas||{})[r.id]||0)/100))}));}
@@ -1715,25 +1835,25 @@ function admDiff(before){const baseline=ADM.snap===null&&Object.keys(before).len
 function admLive(){if(ADM.tab!=="live")return;const list=admList();const now=Date.now();
   const dot=document.getElementById("livedot");dot.className="livedot"+(ADM.err?" err":ADM.lastOk&&now-ADM.lastOk<40000?" on":"");
   document.getElementById("livestamp").textContent=ADM.err?"Senaste hämtningen misslyckades. Försöker igen.":ADM.lastOk?`Senast uppdaterat ${hhmm(ADM.lastOk)} · uppdateras var 15:e sekund`:"Ange URL och nyckel och tryck Hämta.";
-  const isLive=p=>!p.ended&&(now-p.start)<p.dur*60000;
+  const isLive=p=>!p.ended&&now<admEnd(p);
   const live=list.filter(isLive),done=list.filter(p=>!isLive(p));
   const solved=list.reduce((a,p)=>a+Object.values(p.tasks||{}).filter(t=>t.ok).length,0);
   const jokers=list.filter(p=>p.joker).length;
-  const lastEnd=live.length?Math.max(...live.map(p=>p.start+p.dur*60000)):0;
+  const lastEnd=live.length?Math.max(...live.map(p=>admEnd(p))):0;
   const avg=list.length?Math.round(list.reduce((a,p)=>a+p.total,0)/list.length):0;
   document.getElementById("livekpis").innerHTML=`<div><b>${live.length}</b><span>Lag som spelar</span></div><div><b>${done.length}</b><span>Lag som är klara</span></div><div><b>${lastEnd?Math.max(0,Math.ceil((lastEnd-now)/60000))+" min":"–"}</b><span>Tills sista laget når midnatt</span></div><div><b>${avg}</b><span>Snittpoäng</span></div><div><b>${solved}</b><span>Lösta uppgifter totalt</span></div><div><b>${jokers}/${list.length}</b><span>Kristallkulor använda</span></div>`;
   const pt=ADM.prevTotals||{};
-  const rows=list.map((p,i)=>{const left=p.start+p.dur*60000-now;const frac=Math.max(0,Math.min(1,left/(p.dur*60000)));const idle=Math.max(0,Math.round((now-p.ts)/60000));
-    const strug=Object.entries(p.tasks||{}).filter(([k,t])=>!t.d&&TASKS[k]&&t.w>=((TASKS[k].type==="click"||TASKS[k].type==="hotspot")?4:2)).length;
+  const rows=list.map((p,i)=>{const left=admEnd(p)-now;const frac=Math.max(0,Math.min(1,left/(p.dur*60000)));const idle=Math.max(0,Math.round((now-p.ts)/60000));
+    const strug=Object.entries(p.tasks||{}).filter(([k,t])=>!t.d&&TASKS[k]&&t.w>=(TASKS[k].type==="click"?4:2)).length;
     const room=isLive(p)?(p.room||"map"):"results";const d=pt[p.teamId]!=null?p.total-pt[p.teamId]:0;
     return `<tr data-team="${esc(p.teamId)}"><td class="mono">${i+1}</td><td><b>${esc(p.team)}</b></td><td class="mono"><b>${p.total}</b>${d>0?`<span class="delta">+${d}</span>`:d<0?`<span class="delta" style="color:var(--blood-text)">${d}</span>`:""}</td><td><span class="roomchip${room==="map"?" map":room==="results"?" results":""}">${esc(room==="map"?"Huset":ROOMNAME(room))}</span></td><td class="mono">${isLive(p)?`<span class="tleft${left<10*60000?" low":""}"><i style="width:${frac*100}%"></i></span>${Math.max(0,Math.ceil(left/60000))} min`:"Klar"}</td><td class="mono ${isLive(p)&&idle>=5?"idle":"muted"}">${idle<1?"nu":idle+" min"}</td><td>${p.joker?'<span class="flag ai">Kula</span>':""}${strug?`<span class="flag warn">Kämpar ×${strug}</span>`:""}</td></tr>`;}).join("");
   document.getElementById("liveteams").innerHTML=list.length?`<table class="admtbl livetbl"><thead><tr><th>#</th><th>Lag</th><th>Poäng</th><th>Just nu</th><th>Tid kvar</th><th>Senast aktiv</th><th>Flaggor</th></tr></thead><tbody>${rows}</tbody></table>`:'<p class="muted" style="padding:12px">Inga lag än.</p>';
   document.querySelectorAll("#liveteams tbody tr").forEach(tr=>tr.onclick=()=>admOpen(tr.dataset.team));
   const occ={};live.forEach(p=>{const r=ROOMS.find(x=>x.id===p.room)?p.room:"map";(occ[r]=occ[r]||[]).push(p.team);});
   document.getElementById("liverooms").innerHTML=ROOMS.map(r=>r.id).concat(["map"]).map(id=>`<div><b>${esc(id==="map"?"I huset":ROOMNAME(id))}</b><span>${(occ[id]||[]).length}</span><small>${esc((occ[id]||[]).join(", "))||"&nbsp;"}</small></div>`).join("")+`<div><b>Klara</b><span>${done.length}</span><small>${esc(done.map(p=>p.team).join(", "))||"&nbsp;"}</small></div>`;
-  const al=[];live.forEach(p=>{const idle=Math.round((now-p.ts)/60000);const left=p.start+p.dur*60000-now;
+  const al=[];live.forEach(p=>{const idle=Math.round((now-p.ts)/60000);const left=admEnd(p)-now;
     if(idle>=5)al.push(`<div class="alert idlea"><b>${esc(p.team)}</b> har varit tysta i ${idle} min${ROOMS.find(r=>r.id===p.room)?` i ${esc(ROOMNAME(p.room))}`:""}. Fastnat, eller tappat uppkopplingen?</div>`);
-    Object.entries(p.tasks||{}).forEach(([k,t])=>{const T_=TASKS[k];if(!T_||t.d)return;const lim=(T_.type==="click"||T_.type==="hotspot")?4:2;if(t.w>=lim)al.push(`<div class="alert"><b>${esc(p.team)}</b> kämpar med ${esc(ROOMNAME(T_.room))} · ${esc(T_.title)} (${t.w} fel${t.h?", har tagit ledtråd":""}).</div>`);});
+    Object.entries(p.tasks||{}).forEach(([k,t])=>{const T_=TASKS[k];if(!T_||t.d)return;const lim=T_.type==="click"?4:2;if(t.w>=lim)al.push(`<div class="alert"><b>${esc(p.team)}</b> kämpar med ${esc(ROOMNAME(T_.room))} · ${esc(T_.title)} (${t.w} fel${t.h?", har tagit ledtråd":""}).</div>`);});
     if(left>0&&left<15*60000&&!(p.tasks||{}).tor_share&&!(p.tasks||{}).tor_zombie)al.push(`<div class="alert idlea"><b>${esc(p.team)}</b> har ${Math.ceil(left/60000)} min kvar och har inte svarat på något i Tornet.</div>`);});
   document.getElementById("livealerts").innerHTML=al.join("")||'<p class="muted">Inga varningar just nu.</p>';
   document.getElementById("livefeed").innerHTML=ADM.events.length?ADM.events.slice(0,80).map(e=>`<div><span class="t">${hhmm(e.t)}</span> <span class="${e.c}">${esc(e.m)}</span></div>`).join(""):'<div class="t">Händelser visas här när lagen spelar.</div>';
@@ -1741,12 +1861,82 @@ function admLive(){if(ADM.tab!=="live")return;const list=admList();const now=Dat
   stats.sort((a,b)=>a.ok/a.att-b.ok/b.att||b.att-a.att);
   document.getElementById("livehard").innerHTML=stats.length?stats.slice(0,7).map(x=>`<div class="hardrow"><div>${esc(TASKS[x.k].title)}<br><small>${esc(ROOMNAME(TASKS[x.k].room))} · ${x.ok} av ${x.att} lag har löst den</small></div><div class="track"><i style="width:${Math.round(x.ok/x.att*100)}%"></i></div><b>${Math.round(x.ok/x.att*100)} %</b></div>`).join(""):'<p class="muted">Ingen data än.</p>';
 }
+function admEnd(p){const c=ADM.ctl;return c&&c.endAt?c.endAt:p.start+p.dur*60000;}
+/* ---------- styrning ---------- */
+async function admPost(body){const url=document.getElementById("admurl").value.trim(),key=document.getElementById("admkey").value;
+  if(!url||!key){toast("Ange URL och nyckel först.");return false;}
+  try{await fetch(url,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(Object.assign({action:"control",key},body))});setTimeout(admFetchCtl,1500);return true;}
+  catch(e){toast("Kunde inte nå servern.");return false;}}
+async function admFetchCtl(){const url=document.getElementById("admurl").value.trim(),key=document.getElementById("admkey").value;if(!url||!key)return;
+  try{const r=await fetch(url+(url.includes("?")?"&":"?")+"control=1&key="+encodeURIComponent(key));const d=await r.json();if(d&&!Array.isArray(d)&&!d.error){ADM.ctl=d;ADM.ctlOk=true;}else ADM.ctlOk=false;}catch(e){ADM.ctlOk=false;}
+  if(current==="admin")admRender();}
+function admCtl(){if(ADM.tab!=="ctl")return;const c=ADM.ctl||{};const now=Date.now();const st=document.getElementById("ctlstatus");
+  if(ADM.ctlOk===false)st.innerHTML='<span class="err">Skriptet svarar inte på styrning. Har du uppdaterat Code.gs och distribuerat en ny version?</span>';
+  else if(c.endAt){const left=c.endAt-now;st.innerHTML=left>0?`Gemensam midnatt kl <b>${hhmm(c.endAt)}</b>, om <b>${Math.ceil(left/60000)} min</b>. Startade ${c.startAt?hhmm(c.startAt):"–"}.`:`Midnatt har slagit för alla (kl ${hhmm(c.endAt)}).`;}
+  else st.textContent="Ingen gemensam klocka. Varje lag har sin egen speltid från att de skrev in sitt namn.";
+  const sel=document.getElementById("msgto");const cur=ADM.msgTo||sel.value||"all";
+  sel.innerHTML=`<option value="all">Alla lag</option>`+admList().map(p=>`<option value="${esc(p.teamId)}">${esc(p.team)}</option>`).join("");sel.value=[...sel.options].some(o=>o.value===cur)?cur:"all";ADM.msgTo=null;
+  const msgs=(c.msgs||[]).slice().reverse();
+  document.getElementById("msglist").innerHTML=msgs.length?`<label style="margin-top:12px">Skickade telegram (syns tills de tas bort eller laget klickar Uppfattat)</label>`+msgs.map(m=>`<div class="msgrow"><span class="mono">${hhmm(m.ts)} · ${m.to==="all"?"Alla":esc((ADM.teams[m.to]||{}).team||"ett lag")}</span><span>${esc(m.text)}</span><button type="button" class="xbtn" data-delmsg="${esc(m.id)}" aria-label="Ta bort">✕</button></div>`).join(""):'<p class="muted" style="margin-top:10px">Inga telegram skickade.</p>';
+  document.querySelectorAll("[data-delmsg]").forEach(b=>b.onclick=()=>admPost({op:"delmsg",id:b.dataset.delmsg}));}
+function arm(btn,label,fn){let a=false;btn.onclick=()=>{if(!a){a=true;const o=btn.textContent;btn.textContent=label;setTimeout(()=>{a=false;btn.textContent=o;},3500);return;}a=false;fn();};}
+function admCtlInit(){
+  arm(document.getElementById("ctlstart"),"Säkert? Klicka igen",()=>{admPost({op:"start",dur:Number(document.getElementById("ctldur").value)});toast("Klockan startas för alla lag.");});
+  document.getElementById("ctlplus").onclick=()=>{admPost({op:"add",min:5});toast("+5 minuter för alla.");};
+  document.getElementById("ctlminus").onclick=()=>{admPost({op:"add",min:-5});toast("−5 minuter för alla.");};
+  arm(document.getElementById("ctlend"),"Midnatt för alla nu? Klicka igen",()=>{admPost({op:"end"});toast("Midnatt för alla.");});
+  arm(document.getElementById("ctlrelease"),"Säkert? Klicka igen",()=>{admPost({op:"release"});toast("Gemensam klocka släppt.");});
+  document.getElementById("msgsend").onclick=()=>{const t=document.getElementById("msgtext").value.trim();if(!t){toast("Skriv ett meddelande först.");return;}
+    admPost({op:"msg",to:document.getElementById("msgto").value,text:t.slice(0,200)}).then(ok=>{if(ok){document.getElementById("msgtext").value="";toast("Telegrammet skickat.");}});};
+  document.querySelectorAll("[data-quick]").forEach(b=>b.onclick=()=>{document.getElementById("msgtext").value=b.dataset.quick;});}
+/* ---------- genomgång ---------- */
+function admSolveOrder(){const pos=ANS.ord.pan_order.pos,keys=Object.keys(TASKS.pan_order.steps);return pos.map((h,i)=>keys.find(k=>H("pan_order:"+i+":"+k)===h));}
+function admSolveModel(){const roles={};Object.keys(TABLES).forEach(t=>{roles[t]=["fakta","dim","grav"].find(r=>ANS.roles[H("bib:"+t+":"+r)]);});
+  const cols=[];Object.entries(TABLES).forEach(([t,v])=>v.cols.forEach(c=>cols.push(t+"."+c)));const rels=[];
+  for(let i=0;i<cols.length;i++)for(let j=i+1;j<cols.length;j++){const a=cols[i]<cols[j]?cols[i]:cols[j],b=cols[i]<cols[j]?cols[j]:cols[i];for(const c of CARDS)if(ANS.rels[H("rel:"+a+"|"+b+"|"+c)])rels.push(c==="* : 1"?[b,a]:[a,b]);}
+  return {roles,rels};}
+const RNAME={fakta:"Fakta",dim:"Dimension",grav:"Kyrkogården"};
+function admReview(){if(ADM.tab!=="review")return;const list=admList();const N=list.length;const rs=document.getElementById("revroom");
+  if(rs.options.length<=1)rs.innerHTML='<option value="">Alla rum</option>'+ROOMS.map(r=>`<option value="${r.id}">${esc(r.name)}</option>`).join("");
+  const only=rs.value;let html="";
+  ROOMS.filter(r=>!only||r.id===only).forEach(r=>{html+=`<div class="revroom"><h3>${esc(r.name)} <span class="muted" style="font-size:.5em;font-family:var(--type)">${esc(r.area)}</span></h3>`;
+    ROOM_TASKS(r.id).forEach(k=>{const T_=TASKS[k];const att=list.filter(p=>(p.tasks||{})[k]);const ok=att.filter(p=>p.tasks[k].ok);const tw=att.reduce((a,p)=>a+(p.tasks[k].w||0),0);
+      let body="";
+      if(T_.type==="mcq"){const keys=Object.keys(T_.opts);const right=keys.find(o=>H(k+":"+o)===ANS.mcq[k].h);const cnt={};att.forEach(p=>{const o=p.tasks[k].p;if(o)cnt[o]=(cnt[o]||0)+1;});const tot=Object.values(cnt).reduce((a,b)=>a+b,0)||1;
+        const wrongs=keys.filter(o=>o!==right&&cnt[o]);const trap=wrongs.sort((a,b)=>(cnt[b]||0)-(cnt[a]||0))[0];
+        body=keys.map((o,i)=>`<div class="revopt${o===right?" right":o===trap?" trap":""}"><span class="k">${"ABCD"[i]}</span><span>${esc(T_.opts[o])}${o===right?'<span class="revtag r">Rätt</span>':o===trap?'<span class="revtag t">Vanligaste fällan</span>':""}</span><div class="track"><i style="width:${Math.round((cnt[o]||0)/tot*100)}%"></i></div><b>${cnt[o]||0}</b></div>`).join("")+`<div class="explain">${esc(dec(ANS.mcq[k].x,k+":"+right))}</div>`;}
+      else if(T_.type==="input"){const sol=ok.find(p=>p.tasks[k].a);let ex="";if(sol){const c=canon(k,sol.tasks[k].a);const x=ANS.inp[k].hs[H(k+":"+c)];if(x)ex=dec(x,k+":"+c);}
+        body=`<p>${esc(T_.q)}</p>`+(ex?`<div class="explain">${esc(ex)}</div>`:`<p class="muted">Facit visas här så fort ett lag har löst uppgiften (se även det utskrivna facit).</p>`)+(att.length?`<p class="meta">${tw} felsvar totalt bland ${att.length} lag som försökte.</p>`:"");}
+      else if(T_.type==="click"||T_.type==="hotspot"){const n=ANS.cnt[k].length;const found=Array(n).fill(0),txt=Array(n).fill("");
+        att.forEach(p=>{const seen=new Set();(p.tasks[k].c||[]).forEach(c=>{const h=ANS.clk[k][H(k+":"+c)];if(h&&!seen.has(h.i)){seen.add(h.i);found[h.i]++;if(!txt[h.i])txt[h.i]=dec(h.x,k+":"+c);}});});
+        body=found.map((f,i)=>`<div class="reverr${f?"":" none"}"><span>${txt[i]?esc(txt[i]):`Fel ${i+1}: <i>ingen har hittat det än</i>`}</span><b>${f}/${att.length||0}</b></div>`).join("")+(att.length?`<p class="meta">${tw} felklick totalt${T_.type==="hotspot"?` · ${att.filter(p=>p.tasks[k].x).length} speglar spruckna`:""}.</p>`:"");}
+      else if(T_.type==="model"){const m=admSolveModel();const avg=att.length?(att.reduce((a,p)=>a+p.tasks[k].n,0)/att.length).toFixed(1):"–";
+        body=`<p><b>Placering:</b> ${Object.entries(m.roles).map(([t,r])=>`${esc(TABLES[t].name)} → ${RNAME[r]}`).join(" · ")}</p><p><b>Relationer (1 : *):</b><br>${m.rels.map(([a,b])=>`${esc(TABLES[a.split(".")[0]].name)}.${esc(a.split(".")[1])} → ${esc(TABLES[b.split(".")[0]].name)}.${esc(b.split(".")[1])}`).join("<br>")}</p><p class="meta">Snitt ${avg} av ${taskMax(k)} p bland ${att.length} lag som låste modellen.</p>`;}
+      else if(T_.type==="order"){const o=admSolveOrder();body=`<p><b>Rätt ordning:</b> ${o.map(x=>esc(T_.steps[x])).join(" → ")}</p>`;}
+      else if(T_.type==="py"){body=`<p>${esc(T_.q)}</p><div class="hintbox"><b>Fällan:</b> ${esc(T_.hint)}</div>`+(att.length?`<p class="meta">${tw} misslyckade inlämningar totalt.</p>`:"");}
+      html+=`<article class="task revcard"><div class="taskhead"><span class="chip${T_.lvl.startsWith("Avancerat")?" adv":""}">${esc(T_.lvl)}</span><h3>${esc(T_.title)}</h3><span class="pts">${ok.length} av ${N} lag löste${att.length&&att.length<N?` (${att.length} försökte)`:""}</span></div>${T_.q&&T_.type==="mcq"?`<p class="q">${esc(T_.q)}</p>`:""}${body}</article>`;});
+    html+=`</div>`;});
+  document.getElementById("review").innerHTML=N?html:'<p class="muted">Ingen data än. Hämta resultaten först.</p>';}
+/* ---------- prisutdelning ---------- */
+function admAward(){if(ADM.tab!=="award")return;const top=admList().slice(0,3);const step=ADM.award||0;const btn=document.getElementById("awnext");
+  const order=[2,1,0];const revealed=new Set(order.slice(0,step));
+  btn.textContent=step>=3||top.length===0?"Alla avslöjade":`Avslöja plats ${3-step}`;btn.disabled=step>=3||top.length===0;
+  document.getElementById("awstage").innerHTML=[0,1,2].map(i=>{const p=top[i];const cls="podium p"+(i+1);
+    if(!p)return `<div class="${cls} hidden"><span class="q">–</span></div>`;
+    if(!revealed.has(i))return `<div class="${cls} hidden"><span class="place">${i+1}</span><span class="q">?</span></div>`;
+    const pr=admProfile(p);return `<div class="${cls}${ADM.justRevealed===i?" reveal":""}"><span class="place">${i+1}</span><span class="nm">${esc(p.team)}</span><span class="pts">${p.total}<small> / ${p.max} p</small></span><span class="prof">${esc(pr[0])}</span>${admRadar(admPcts(p),{cls:"cmpradar",fs:22,vb:"-150 -6 720 412"})}</div>`;}).join("");
+  ADM.justRevealed=null;}
+function admAwardInit(){document.getElementById("awnext").onclick=()=>{const s=ADM.award||0;if(s>=3)return;ADM.justRevealed=[2,1,0][s];ADM.award=s+1;admAward();};
+  arm(document.getElementById("awreset"),"Säkert? Klicka igen",()=>{ADM.award=0;admAward();});
+  const fs=(id)=>()=>{const el=document.getElementById(id);try{if(document.fullscreenElement)document.exitFullscreen();else el.requestFullscreen().catch(()=>toast("Helskärm stöds inte här."));}catch(e){toast("Helskärm stöds inte här.");}};
+  document.getElementById("awfs").onclick=fs("admtab-award");document.getElementById("revfs").onclick=fs("admtab-review");
+  document.getElementById("revroom").onchange=()=>admReview();}
 function admOpen(id){ADM.sel=id;ADM.tab="team";admRender();window.scrollTo(0,0);}
 function admRender(){const list=admList();const now=Date.now();
   document.querySelectorAll("#admtabs [data-admtab]").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.admtab===ADM.tab)));
-  ["live","board","compare","team"].forEach(t=>document.getElementById("admtab-"+t).hidden=(ADM.tab!==t));admLive();
+  ["live","board","compare","team","review","award","ctl"].forEach(t=>document.getElementById("admtab-"+t).hidden=(ADM.tab!==t));admLive();admReview();admAward();admCtl();
   const rows=list.map((p,i)=>{const T_=Object.values(p.tasks||{});const solved=T_.filter(t=>t.ok).length;const hints=T_.filter(t=>t.h).length;const wr=T_.reduce((a,t)=>a+(t.w||0),0);
-    const live=!p.ended&&(now-p.start)<p.dur*60000;const age=Math.round((now-p.ts)/60000);
+    const live=!p.ended&&now<admEnd(p);const age=Math.round((now-p.ts)/60000);
     return `<tr data-team="${esc(p.teamId)}" class="${ADM.sel===p.teamId?"sel":""}"><td class="mono">${i+1}</td><td><b>${esc(p.team)}</b></td><td class="mono"><b>${p.total}</b> / ${p.max}</td>${ROOMS.map(r=>`<td class="mono"><span class="mini"><i style="width:${(p.areas||{})[r.id]||0}%"></i></span>${(p.areas||{})[r.id]||0}%</td>`).join("")}<td class="mono">${solved}</td><td class="mono">${wr}</td><td class="mono">${hints}</td><td>${p.joker&&TASKS[p.joker]?esc(TASKS[p.joker].title):"–"}</td><td><span class="pill ${live?"live":"done"}">${live?"Spelar":"Klar"}</span></td><td class="mono muted">${age<1?"nu":age+" min"}</td></tr>`;}).join("");
   document.getElementById("admboard").innerHTML=list.length?`<table class="admtbl"><thead><tr><th>#</th><th>Lag</th><th>Poäng</th>${ROOMS.map(r=>`<th>${esc(r.short)}</th>`).join("")}<th>Lösta</th><th>Fel</th><th>Ledtr.</th><th>Kristallkula</th><th>Status</th><th>Uppd.</th></tr></thead><tbody>${rows}</tbody></table>`:'<p class="msg muted" style="padding:14px">Inga lag än.</p>';
   document.querySelectorAll("#admboard tbody tr").forEach(tr=>tr.onclick=()=>admOpen(tr.dataset.team));
@@ -1759,7 +1949,7 @@ function admRender(){const list=admList();const now=Date.now();
   document.getElementById("admmatrix").innerHTML=list.length?`<table class="admtbl hm"><thead>${head}</thead><tbody>${body}</tbody></table>`:"";
   document.querySelectorAll("#admmatrix tbody tr").forEach(tr=>tr.onclick=()=>admOpen(tr.dataset.team));
   // compare
-  document.getElementById("admcompare").innerHTML=list.length?list.map((p,i)=>{const live=!p.ended&&(now-p.start)<p.dur*60000;const pr=admProfile(p);
+  document.getElementById("admcompare").innerHTML=list.length?list.map((p,i)=>{const live=!p.ended&&now<admEnd(p);const pr=admProfile(p);
     return `<button type="button" class="cmpcard" data-team="${esc(p.teamId)}"><span class="rank${i===0?" r1":""}">#${i+1}</span><span class="nm">${esc(p.team)}</span><span class="tot">${p.total}<small> / ${p.max} p</small></span><span class="prof">${esc(pr[0])}</span>${admRadar(admPcts(p),{cls:"cmpradar",fs:21,vb:"-150 -6 720 412"})}<span class="foot"><span>${Math.round(p.total/p.max*100)} %</span><span>${p.joker?"Kristallkula använd":"Kulan oanvänd"}</span><span class="pill ${live?"live":"done"}">${live?"Spelar":"Klar"}</span></span></button>`;}).join(""):'<p class="muted">Inga lag än. Tryck Hämta eller klistra in resultatkoder.</p>';
   document.querySelectorAll("#admcompare .cmpcard").forEach(c=>c.onclick=()=>admOpen(c.dataset.team));
   // team detail
@@ -1767,11 +1957,11 @@ function admRender(){const list=admList();const now=Date.now();
   if(!p){det.innerHTML=`<p class="muted" style="font-size:1.05rem">Välj ett lag i topplistan eller under Jämför lag.</p>`;return;}
   const idx=list.findIndex(x=>x.teamId===p.teamId);const pc=admPcts(p);const pr=admProfile(p);const T_=Object.values(p.tasks||{});
   const mins=Math.round(Math.min(p.dur*60000,(p.ts-p.start))/60000);const wr=T_.reduce((a,t)=>a+(t.w||0),0);const hints=T_.filter(t=>t.h).length;
-  const nav=`<div class="teamnav"><button type="button" class="btn ghost small" id="admprev" ${idx<=0?"disabled":""}>← Föregående</button><select id="admpick" aria-label="Välj lag">${list.map((x,i)=>`<option value="${esc(x.teamId)}" ${x.teamId===p.teamId?"selected":""}>#${i+1} ${esc(x.team)}</option>`).join("")}</select><button type="button" class="btn ghost small" id="admnext" ${idx>=list.length-1?"disabled":""}>Nästa →</button><span style="flex:1"></span><button type="button" class="btn ghost small" id="admtocmp">Till Jämför lag</button><button type="button" class="btn ghost small admdel" id="admdel">Ta bort laget</button></div>`;
+  const nav=`<div class="teamnav"><button type="button" class="btn ghost small" id="admprev" ${idx<=0?"disabled":""}>← Föregående</button><select id="admpick" aria-label="Välj lag">${list.map((x,i)=>`<option value="${esc(x.teamId)}" ${x.teamId===p.teamId?"selected":""}>#${i+1} ${esc(x.team)}</option>`).join("")}</select><button type="button" class="btn ghost small" id="admnext" ${idx>=list.length-1?"disabled":""}>Nästa →</button><span style="flex:1"></span><button type="button" class="btn ghost small" id="admtocmp">Till Jämför lag</button><button type="button" class="btn ghost small" id="admmsg">Skicka telegram</button><button type="button" class="btn ghost small admdel" id="admdel">Ta bort laget</button></div>`;
   const trows=keys.filter(k=>(p.tasks||{})[k]).map(k=>{const t=p.tasks[k],TT=TASKS[k];let ans=t.a?esc(t.a):t.p&&TT.opts?esc(TT.opts[t.p]||t.p):t.f?t.f+" hittade":t.s?esc(t.s):"";
     return `<tr><td>${esc(ROOMS.find(r=>r.id===TT.room).name)}</td><td>${esc(TT.title)}</td><td class="mono">${t.n} / ${t.m}</td><td>${t.ok?"✓":t.d?"✗":"…"}${t.j?" · AI-joker":""}${t.h?" · ledtråd":""}${t.w?` · ${t.w} fel`:""}</td><td style="white-space:normal;min-width:260px;max-width:460px">${ans}</td></tr>`;}).join("");
   det.innerHTML=`${nav}
-   <div class="teamhead"><div class="eyebrow">Plats ${idx+1} av ${list.length} · ${!p.ended&&(Date.now()-p.start)<p.dur*60000?"spelar fortfarande":"klart"}</div><h2>${esc(p.team)}</h2></div>
+   <div class="teamhead"><div class="eyebrow">Plats ${idx+1} av ${list.length} · ${!p.ended&&Date.now()<admEnd(p)?"spelar fortfarande":"klart"}</div><h2>${esc(p.team)}</h2></div>
    <div class="resgrid" style="margin-top:0"><div style="display:flex;flex-direction:column;gap:20px;min-width:0"><div class="total">${p.total}<small> / ${p.max} p</small></div>
      <div class="profile"><div class="eyebrow">Spökjägarprofil</div><h3>${esc(pr[0])}</h3><p class="muted">${esc(pr[1])}</p></div>
      <div class="bars">${pc.map(x=>`<div class="bar"><span>${esc(x.r.area)}</span><div class="track"><i style="width:${Math.round(x.p*100)}%"></i></div><b>${Math.round(x.p*100)} %</b></div>`).join("")}</div></div>
@@ -1783,6 +1973,7 @@ function admRender(){const list=admList();const now=Date.now();
   document.getElementById("admprev").onclick=()=>go_(-1);document.getElementById("admnext").onclick=()=>go_(1);
   document.getElementById("admpick").onchange=e=>admOpen(e.target.value);
   document.getElementById("admtocmp").onclick=()=>{ADM.tab="compare";admRender();};
+  document.getElementById("admmsg").onclick=()=>{ADM.tab="ctl";ADM.msgTo=p.teamId;admRender();document.getElementById("msgtext").focus();};
   const del=document.getElementById("admdel");let armed=false;
   del.onclick=()=>{if(!armed){armed=true;del.textContent=`Ta bort ”${p.team}” för gott? Klicka igen`;setTimeout(()=>{if(del.isConnected){armed=false;del.textContent="Ta bort laget";}},4000);return;}admDelete(p);};}
 async function admDelete(p){const url=document.getElementById("admurl").value.trim(),key=document.getElementById("admkey").value;
@@ -1793,7 +1984,7 @@ async function admDelete(p){const url=document.getElementById("admurl").value.tr
   if(url&&key){try{await fetch(url,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"delete",key,teamId:p.teamId,team:p.team})});toast(`”${p.team}” är borttaget.`);setTimeout(admFetch,2000);}
     catch(e){toast("Kunde inte nå servern. Laget är dolt här men finns kvar i kalkylarket.");}}
   else toast(`”${p.team}” är borttaget från listan.`);}
-function admInit(){admLoadLocal();admLoadEvents();admRender();
+function admInit(){admLoadLocal();admLoadEvents();admCtlInit();admAwardInit();admRender();
   document.getElementById("livefs").onclick=()=>{const el=document.getElementById("admtab-live");try{if(document.fullscreenElement)document.exitFullscreen();else el.requestFullscreen().catch(()=>toast("Helskärm stöds inte här."));}catch(e){toast("Helskärm stöds inte här.");}};
   setInterval(()=>{if(current==="admin")admLive();},20000);
   document.querySelectorAll("#admtabs [data-admtab]").forEach(b=>b.onclick=()=>{ADM.tab=b.dataset.admtab;admRender();});
@@ -1812,15 +2003,15 @@ function start(){bindHouse(document.querySelector("#v-start .house"));
   const prev=load();if(prev&&prev.team){document.getElementById("resume").hidden=false;document.getElementById("resumebtn").textContent="Fortsätt som "+prev.team;document.getElementById("resumebtn").onclick=()=>{S=prev;go();};}
   document.getElementById("startform").onsubmit=e=>{e.preventDefault();const n=document.getElementById("teamname").value.trim();if(!n)return;S=blank(n,Number(document.getElementById("duration").value));save();go();};
   document.getElementById("backbtn").onclick=()=>{renderMap();show("map");};
-  let endArmed=false;document.getElementById("endbtn").onclick=e=>{if(!endArmed){endArmed=true;e.target.textContent="Säkert? Klicka igen";setTimeout(()=>{endArmed=false;e.target.textContent="Avsluta";},3500);return;}endArmed=false;e.target.textContent="Avsluta";S.ended=true;save();renderResults();show("results");};
+  let endArmed=false;document.getElementById("endbtn").onclick=e=>{if(!endArmed){endArmed=true;e.target.textContent="Säkert? Klicka igen";setTimeout(()=>{endArmed=false;e.target.textContent="Avsluta";},3500);return;}endArmed=false;e.target.textContent="Avsluta";S.ended=true;S.endedBy="self";save();renderResults();show("results");};
   document.getElementById("overlaybtn").onclick=()=>{document.getElementById("overlay").hidden=true;renderResults();show("results");};
   document.getElementById("res-back").onclick=()=>{renderMap();show("map");};
   document.getElementById("res-copy").onclick=()=>{const txt=document.getElementById("res-full").textContent;const done=()=>toast("Resultatkoden är kopierad.");
     try{navigator.clipboard.writeText(txt).then(done,()=>{selectCode();});}catch(e){selectCode();}};
   let resetArmed=false;document.getElementById("res-reset").onclick=e=>{if(!resetArmed){resetArmed=true;e.target.textContent="Radera allt och börja om?";setTimeout(()=>{resetArmed=false;e.target.textContent="Nytt spel";},3500);return;}try{localStorage.removeItem(KEY);}catch(_){}S=null;show("start");document.getElementById("resume").hidden=true;e.target.textContent="Nytt spel";resetArmed=false;};
-  setInterval(tick,1000);}
+  setInterval(tick,1000);setInterval(()=>{if(S&&current!=="admin")pollCtl();},20000);}
 function selectCode(){const el=document.getElementById("res-full");const r=document.createRange();r.selectNodeContents(el);const s=window.getSelection();s.removeAllRanges();s.addRange(r);toast("Koden är markerad. Kopiera med Ctrl/Cmd + C.");}
-function go(){hud();tick();if(locked()){renderResults();show("results");}else{renderMap();show("map");}}
+function go(){if(S&&S.ctl)CTL=S.ctl;hud();tick();pollCtl();showMsgs();if(locked()){renderResults();show("results");}else{renderMap();show("map");}}
 start();
 route();
 </script>
