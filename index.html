@@ -101,7 +101,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .btn[disabled]{opacity:.38;cursor:not-allowed;filter:grayscale(.6)}
 
 /* ---------- inputs: terminal / skrivmaskin ---------- */
-input[type=text],input[type=password],select,textarea{font-variant-numeric:slashed-zero;font-feature-settings:'zero' 1;font-family:var(--mono);font-size:1rem;color:var(--smoothie);background:#05080c;border:1px solid #2b3a4b;border-bottom:2px solid var(--pumpkin);border-radius:0;padding:.7em .9em;width:100%;box-shadow:inset 0 2px 10px rgba(0,0,0,.7);caret-color:var(--mandarin)}
+input[type=text],input[type=password],input[type=email],select,textarea{font-variant-numeric:slashed-zero;font-feature-settings:'zero' 1;font-family:var(--mono);font-size:1rem;color:var(--smoothie);background:#05080c;border:1px solid #2b3a4b;border-bottom:2px solid var(--pumpkin);border-radius:0;padding:.7em .9em;width:100%;box-shadow:inset 0 2px 10px rgba(0,0,0,.7);caret-color:var(--mandarin)}
 input::placeholder,textarea::placeholder{color:#6b5a48}
 select{color:var(--sand)}
 textarea{font-size:.95rem;resize:vertical;line-height:1.55;tab-size:4}
@@ -608,6 +608,39 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
 .telegram .btn.ghost{align-self:flex-start;color:var(--ink);border-color:var(--ink);box-shadow:none}
 @media (prefers-reduced-motion:no-preference){.telegram{animation:tgin .6s cubic-bezier(.2,.9,.3,1.2) both}@keyframes tgin{from{transform:translateX(120%) rotate(4deg);opacity:0}to{transform:rotate(-.6deg);opacity:1}}}
 
+
+/* ---------- taktil känsla på pekskärm ---------- */
+button,.opt,.roomcard,.step,.tcard,.tcol,.cmpcard,.hs,.house .win,.house .door,[data-cell],select,input,textarea{-webkit-tap-highlight-color:transparent}
+@media (hover:none),(pointer:coarse){
+  .btn,.opt,.roomcard,.step,.cmpcard,.relrow select,.xbtn,.seg button,.admtabs button{transition:transform .08s ease-out,filter .12s,box-shadow .12s}
+  .btn:active{transform:translateY(2px) scale(.97);filter:brightness(1.15)}
+  .opt:active:not([disabled]){transform:scale(.985);box-shadow:-4px 0 0 var(--pumpkin),0 2px 6px rgba(0,0,0,.4)}
+  .roomcard:active,.cmpcard:active{transform:scale(.97);box-shadow:inset 0 0 0 4px #0a1018,inset 0 0 0 5px var(--pumpkin),0 0 24px rgba(247,125,25,.25)}
+  .step:active:not([disabled]){transform:scale(.97);border-color:var(--mandarin)}
+  .reg td button:active{background:rgba(247,125,25,.35)}
+  .hs:active .hit{stroke:var(--pumpkin);fill:rgba(247,125,25,.15)}
+  .xbtn:active,.admtabs button:active{transform:scale(.94)}
+  .house .win:active .frame{stroke:var(--mandarin);stroke-width:4}
+  .tcard:active,.tbox .th:active{filter:brightness(1.2)}
+}
+.hapt-switch{position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;pointer-events:none}
+
+/* ---------- lagmedlemmar ---------- */
+.memberform{display:flex;flex-direction:column;gap:12px;max-width:620px}
+.mf-title{font-size:1.6rem}
+.mf-title span{color:var(--mandarin)}
+.memberrows{display:flex;flex-direction:column;gap:8px}
+.memberrow{display:grid;grid-template-columns:1.6em 1fr 1.2fr 34px;gap:8px;align-items:end}
+.memberrow .n{font-family:var(--display);font-size:1.4rem;color:var(--pumpkin);text-align:center;padding-bottom:.35em}
+.memberrow label{font-size:.78rem;margin-bottom:.2em}
+.memberrow .xbtn{margin-bottom:4px}
+.memberrow input.bad{border-color:var(--blood-text);border-bottom-color:var(--blood-text)}
+.mf-note{font-size:.9rem}
+.members{display:flex;flex-direction:column;gap:2px}
+.podium .members{font-family:var(--type);font-size:1rem;color:var(--paper);line-height:1.35}
+.cmpcard .members{font-family:var(--type);font-size:.82rem;color:var(--sky)}
+@media (max-width:560px){.memberrow{grid-template-columns:1.4em 1fr 34px}.memberrow .em{grid-column:2/3}.memberrow .xbtn{grid-row:1/3;grid-column:3}}
+
 /* ---------- responsive ---------- */
 @media (min-width:1600px){body{font-size:20px}.wrap{max-width:1360px}.hud-in{max-width:1360px}}
 @media (max-width:900px){
@@ -674,6 +707,15 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
           <div><label for="teamname">Lagnamn</label><input type="text" id="teamname" maxlength="40" placeholder="Till exempel Pumpkin Pipeline" required></div>
           <div><label for="duration">Speltid</label><select id="duration"><option value="90">90 min</option><option value="75">75 min</option><option value="60">60 min</option><option value="45">45 min</option></select></div>
           <button class="btn" type="submit">Gå in i huset →</button>
+        </form>
+        <form class="memberform" id="memberform" autocomplete="off" novalidate hidden>
+          <div class="eyebrow">Steg 2 av 2</div>
+          <h3 class="mf-title">Vilka är spökjägarna i <span id="mf-team"></span>?</h3>
+          <div class="memberrows" id="memberrows"></div>
+          <div class="answerrow"><button type="button" class="btn ghost small" id="addmember">+ Lägg till deltagare</button><span class="mono muted" id="membercount" style="font-size:.85rem"></span></div>
+          <p class="feedback bad" id="membererr" aria-live="polite"></p>
+          <p class="muted mf-note">Namn och e-post används bara av Catigo för den här kvällen, till exempel för att utse och kontakta vinnarna.</p>
+          <div class="answerrow"><button type="button" class="btn ghost small" id="memberback">← Ändra lagnamn</button><button class="btn" type="submit">Gå in i huset →</button></div>
         </form>
         <div id="resume" hidden><button class="btn ghost small" id="resumebtn" type="button">Fortsätt pågående spel</button></div>
       </div>
@@ -867,6 +909,7 @@ pre.log .e{color:var(--blood-text);text-shadow:0 0 6px rgba(224,103,90,.35)}
       </div>
     </div>
     <div id="admtab-board" class="admpane" hidden>
+      <div class="answerrow"><button type="button" class="btn ghost small" id="admallmail">Kopiera alla deltagares e-post</button><span class="muted" id="admmailcount" style="font-size:.9rem"></span></div>
       <div class="scroll" id="admboard"></div>
       <div class="task" style="margin-top:22px"><div class="taskhead"><span class="chip">Matris</span><h3>Uppgifter per lag</h3></div><p class="muted" style="font-size:.95rem">Grön = löst, röd = stängd eller fel, orange = påbörjad, lila ring = kristallkulan. Siffran är nettopoäng.</p><div class="scroll" id="admmatrix"></div></div>
     </div>
@@ -1286,14 +1329,14 @@ const CARDS=["1 : *","* : 1","1 : 1","* : *"];
 /* ---------- state ---------- */
 const KEY="catigo-hemsokta-v2";
 let S=null;
-function blank(team,dur){return {id:Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4),team,dur,start:Date.now(),ended:false,joker:null,t:{}};}
+function blank(team,dur,members){return {id:Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4),team,dur,members:members||[],start:Date.now(),ended:false,joker:null,t:{}};}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}scheduleSync();}
 
 /* ---------- results sync ---------- */
 function payload(){if(!S.id)S.id=Math.random().toString(36).slice(2,12);const areas={};ROOMS.forEach(r=>areas[r.id]=Math.round(roomPct(r.id)*100));
   const tasks={};Object.keys(TASKS).forEach(k=>{const s=S.t[k];if(!s)return;if(!(s.done||s.earned||s.wrong||s.hint||s.joker||(s.found&&s.found.length)||(s.seq&&s.seq.length)||(s.rels&&s.rels.length)||Object.keys(s.place||{}).length))return;const o={n:net(k),m:taskMax(k),d:s.done?1:0,ok:s.ok?1:0,w:s.wrong,h:s.hint?1:0,j:s.joker?1:0};
     if(s.answer)o.a=s.answer;if(s.pick)o.p=s.pick;if(s.found&&s.found.length)o.f=s.found.length;if(s.summary)o.s=s.summary;if(s.cells&&s.cells.length)o.c=s.cells;if(s.cracked)o.x=1;tasks[k]=o;});
-  return {v:2,room:current==="room"?currentRoom:current,teamId:S.id,team:S.team,start:S.start,dur:S.dur,ended:!!(S.ended||timeLeft()<=0),ts:Date.now(),total:total(),max:grandMax(),areas,joker:S.joker,tasks,py:(S.pyDraft||"").slice(0,4000)};}
+  return {v:2,room:current==="room"?currentRoom:current,teamId:S.id,team:S.team,members:S.members||[],start:S.start,dur:S.dur,ended:!!(S.ended||timeLeft()<=0),ts:Date.now(),total:total(),max:grandMax(),areas,joker:S.joker,tasks,py:(S.pyDraft||"").slice(0,4000)};}
 function b64e(str){const b=new TextEncoder().encode(str);let s="";for(let i=0;i<b.length;i++)s+=String.fromCharCode(b[i]);return btoa(s);}
 function b64d(str){const bin=atob(str);const b=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)b[i]=bin.charCodeAt(i);return new TextDecoder().decode(b);}
 function resultCode(){const p=payload();delete p.py;const j=JSON.stringify(p);return "CATIGO2."+b64e(j)+"."+H("code|"+j).slice(0,6);}
@@ -1361,7 +1404,7 @@ function show(v){["start","map","room","results","admin"].forEach(x=>document.ge
 function hud(){if(!S)return;document.getElementById("hud-team").textContent=S.team;document.getElementById("hud-score").textContent=total();
   document.getElementById("hud-ball").classList.toggle("used",!!S.joker);
   document.getElementById("hud-balltxt").textContent=S.joker?("Använd: "+TASKS[S.joker].title):"Kristallkulan redo";}
-let toastTimer;function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.hidden=true,2600);}
+let toastTimer;function toast(msg){if(window.__haptic)window.__haptic(/Rätt|fångat|krossad|gröna|redo|skickat|kopierad|Relation skapad|mer tid/i.test(msg)?"ok":/Fel|Bu!|Förbannade|sprack|Inget spöke|Kunde inte|stängd/i.test(msg)?"bad":"tap",true);const t=document.getElementById("toast");t.textContent=msg;t.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.hidden=true,2600);}
 
 function houseStates(svg){if(!S)return;svg.querySelectorAll(".win").forEach(w=>{const r=w.dataset.room;
   w.classList.toggle("done",roomDone(r));w.classList.toggle("started",roomStarted(r)&&!roomDone(r));
@@ -1870,6 +1913,9 @@ function admLive(){if(ADM.tab!=="live")return;const list=admList();const now=Dat
   stats.sort((a,b)=>a.ok/a.att-b.ok/b.att||b.att-a.att);
   document.getElementById("livehard").innerHTML=stats.length?stats.slice(0,7).map(x=>`<div class="hardrow"><div>${esc(TASKS[x.k].title)}<br><small>${esc(ROOMNAME(TASKS[x.k].room))} · ${x.ok} av ${x.att} lag har löst den</small></div><div class="track"><i style="width:${Math.round(x.ok/x.att*100)}%"></i></div><b>${Math.round(x.ok/x.att*100)} %</b></div>`).join(""):'<p class="muted">Ingen data än.</p>';
 }
+function copyText(txt,okMsg){const fb=()=>{const ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast(okMsg);}catch(e){toast("Kunde inte kopiera. Markera texten manuellt.");}ta.remove();};
+  try{navigator.clipboard.writeText(txt).then(()=>toast(okMsg),fb);}catch(e){fb();}}
+function membersLine(p){return (p.members||[]).map(m=>m.name).filter(Boolean).join(" · ");}
 function admEnd(p){const c=ADM.ctl;return c&&c.endAt?c.endAt:p.start+p.dur*60000;}
 /* ---------- styrning ---------- */
 async function admPost(body){const url=document.getElementById("admurl").value.trim(),key=document.getElementById("admkey").value;
@@ -1940,7 +1986,7 @@ function admAward(){if(ADM.tab!=="award")return;const top=admList().slice(0,3);c
   document.getElementById("awstage").innerHTML=[0,1,2].map(i=>{const p=top[i];const cls="podium p"+(i+1);
     if(!p)return `<div class="${cls} hidden"><span class="q">–</span></div>`;
     if(!revealed.has(i))return `<div class="${cls} hidden"><span class="place">${i+1}</span><span class="q">?</span></div>`;
-    const pr=admProfile(p);return `<div class="${cls}${ADM.justRevealed===i?" reveal":""}"><span class="place">${i+1}</span><span class="nm">${esc(p.team)}</span><span class="pts">${p.total}<small> / ${p.max} p</small></span><span class="prof">${esc(pr[0])}</span>${admRadar(admPcts(p),{cls:"cmpradar",fs:22,vb:"-150 -6 720 412"})}</div>`;}).join("");
+    const pr=admProfile(p);return `<div class="${cls}${ADM.justRevealed===i?" reveal":""}"><span class="place">${i+1}</span><span class="nm">${esc(p.team)}</span>${membersLine(p)?`<span class="members">${(p.members||[]).map(m=>`<span>${esc(m.name)}</span>`).join("")}</span>`:""}<span class="pts">${p.total}<small> / ${p.max} p</small></span><span class="prof">${esc(pr[0])}</span>${admRadar(admPcts(p),{cls:"cmpradar",fs:22,vb:"-150 -6 720 412"})}</div>`;}).join("");
   ADM.justRevealed=null;}
 function admAwardInit(){document.getElementById("awnext").onclick=()=>{const s=ADM.award||0;if(s>=3)return;ADM.justRevealed=[2,1,0][s];ADM.award=s+1;admAward();};
   arm(document.getElementById("awreset"),"Säkert? Klicka igen",()=>{ADM.award=0;admAward();});
@@ -1954,6 +2000,7 @@ function admRender(){const list=admList();const now=Date.now();
   const rows=list.map((p,i)=>{const T_=Object.values(p.tasks||{});const solved=T_.filter(t=>t.ok).length;const hints=T_.filter(t=>t.h).length;const wr=T_.reduce((a,t)=>a+(t.w||0),0);
     const live=!p.ended&&now<admEnd(p);const age=Math.round((now-p.ts)/60000);
     return `<tr data-team="${esc(p.teamId)}" class="${ADM.sel===p.teamId?"sel":""}"><td class="mono">${i+1}</td><td><b>${esc(p.team)}</b></td><td class="mono"><b>${p.total}</b> / ${p.max}</td>${ROOMS.map(r=>`<td class="mono"><span class="mini"><i style="width:${(p.areas||{})[r.id]||0}%"></i></span>${(p.areas||{})[r.id]||0}%</td>`).join("")}<td class="mono">${solved}</td><td class="mono">${wr}</td><td class="mono">${hints}</td><td>${p.joker&&TASKS[p.joker]?esc(TASKS[p.joker].title):"–"}</td><td><span class="pill ${live?"live":"done"}">${live?"Spelar":"Klar"}</span></td><td class="mono muted">${age<1?"nu":age+" min"}</td></tr>`;}).join("");
+  {const n=new Set(list.flatMap(p=>(p.members||[]).map(m=>m.email)).filter(Boolean)).size;const el=document.getElementById("admmailcount");if(el)el.textContent=`${list.reduce((a,p)=>a+(p.members||[]).length,0)} deltagare i ${list.length} lag`;}
   document.getElementById("admboard").innerHTML=list.length?`<table class="admtbl"><thead><tr><th>#</th><th>Lag</th><th>Poäng</th>${ROOMS.map(r=>`<th>${esc(r.short)}</th>`).join("")}<th>Lösta</th><th>Fel</th><th>Ledtr.</th><th>Kristallkula</th><th>Status</th><th>Uppd.</th></tr></thead><tbody>${rows}</tbody></table>`:'<p class="msg muted" style="padding:14px">Inga lag än.</p>';
   document.querySelectorAll("#admboard tbody tr").forEach(tr=>tr.onclick=()=>admOpen(tr.dataset.team));
   const keys=Object.keys(TASKS);
@@ -1983,12 +2030,14 @@ function admRender(){const list=admList();const now=Date.now();
      <div class="bars">${pc.map(x=>`<div class="bar"><span>${esc(x.r.area)}</span><div class="track"><i style="width:${Math.round(x.p*100)}%"></i></div><b>${Math.round(x.p*100)} %</b></div>`).join("")}</div></div>
      <div>${admRadar(pc,{cls:"radar"}).replace('<svg class="radar"','<svg class="radar" style="width:100%;max-width:560px;height:auto;display:block;margin:auto"')}</div></div>
    <div class="statsrow"><div><b>${mins} min</b><span>Speltid</span></div><div><b>${wr}</b><span>Felsvar</span></div><div><b>${hints}</b><span>Ledtrådar</span></div><div><b style="font-size:1rem;line-height:1.9">${p.joker&&TASKS[p.joker]?esc(TASKS[p.joker].title):"Oanvänd"}</b><span>Kristallkulan</span></div></div>
+   <div class="task"><div class="taskhead"><span class="chip">Laget</span><h3>Lagmedlemmar (${(p.members||[]).length})</h3></div>${(p.members||[]).length?`<div class="scroll"><table class="admtbl"><thead><tr><th>#</th><th>Namn</th><th>E-post</th></tr></thead><tbody>${p.members.map((m,i)=>`<tr><td class="mono">${i+1}</td><td>${esc(m.name)}</td><td class="mono">${esc(m.email)}</td></tr>`).join("")}</tbody></table></div><div><button type="button" class="btn ghost small" id="admcopymail">Kopiera lagets e-postadresser</button></div>`:'<p class="muted">Laget registrerade inga medlemmar (startade med en äldre version av spelet).</p>'}</div>
    <div class="task"><div class="taskhead"><span class="chip">Svar</span><h3>Uppgift för uppgift</h3></div><div class="scroll"><table class="admtbl"><thead><tr><th>Rum</th><th>Uppgift</th><th>Poäng</th><th>Status</th><th>Svar</th></tr></thead><tbody>${trows||'<tr><td colspan="5" class="muted">Inga uppgifter påbörjade.</td></tr>'}</tbody></table></div></div>
    <div class="task"><div class="taskhead"><span class="chip">Python</span><h3>Lagets Python-kod</h3></div><pre class="log" style="max-height:520px">${esc(p.py||"(ingen kod skickad)")}</pre></div>`;
   const go_=d=>{const n=list[idx+d];if(n)admOpen(n.teamId);};
   document.getElementById("admprev").onclick=()=>go_(-1);document.getElementById("admnext").onclick=()=>go_(1);
   document.getElementById("admpick").onchange=e=>admOpen(e.target.value);
   document.getElementById("admtocmp").onclick=()=>{ADM.tab="compare";admRender();};
+  const cm=document.getElementById("admcopymail");if(cm)cm.onclick=()=>copyText((p.members||[]).map(m=>m.email).join("; "),"Lagets e-postadresser är kopierade.");
   document.getElementById("admmsg").onclick=()=>{ADM.tab="ctl";ADM.msgTo=p.teamId;admRender();document.getElementById("msgtext").focus();};
   const del=document.getElementById("admdel");let armed=false;
   del.onclick=()=>{if(!armed){armed=true;del.textContent=`Ta bort ”${p.team}” för gott? Klicka igen`;setTimeout(()=>{if(del.isConnected){armed=false;del.textContent="Ta bort laget";}},4000);return;}admDelete(p);};}
@@ -2001,6 +2050,7 @@ async function admDelete(p){const url=document.getElementById("admurl").value.tr
     catch(e){toast("Kunde inte nå servern. Laget är dolt här men finns kvar i kalkylarket.");}}
   else toast(`”${p.team}” är borttaget från listan.`);}
 function admInit(){admLoadLocal();admLoadEvents();admCtlInit();admAwardInit();admRender();
+  document.getElementById("admallmail").onclick=()=>{const all=admList().flatMap(p=>(p.members||[]).map(m=>m.email)).filter(Boolean);if(!all.length){toast("Inga e-postadresser än.");return;}copyText([...new Set(all)].join("; "),`${new Set(all).size} e-postadresser kopierade.`);};
   document.getElementById("livefs").onclick=()=>{const el=document.getElementById("admtab-live");try{if(document.fullscreenElement)document.exitFullscreen();else el.requestFullscreen().catch(()=>toast("Helskärm stöds inte här."));}catch(e){toast("Helskärm stöds inte här.");}};
   setInterval(()=>{if(current==="admin")admLive();},20000);
   document.querySelectorAll("#admtabs [data-admtab]").forEach(b=>b.onclick=()=>{ADM.tab=b.dataset.admtab;admRender();});
@@ -2015,13 +2065,36 @@ function route(){if(location.hash==="#admin"){if(!ADM.inited){ADM.inited=true;do
 window.addEventListener("hashchange",()=>{if(!route()&&current==="admin"){S?go():show("start");}});
 
 /* ---------- boot ---------- */
-function enterViaDoor(){const n=document.getElementById("teamname");if(n.value.trim()){const f=document.getElementById("startform");if(f.requestSubmit)f.requestSubmit();else f.onsubmit(new Event("submit"));return;}
+let MEMBERS=[{name:"",email:""}];
+const EMAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+function showMemberStep(team){document.getElementById("mf-team").textContent=team;document.getElementById("startform").hidden=true;document.getElementById("memberform").hidden=false;document.getElementById("membererr").textContent="";renderMembers(0);try{document.getElementById("memberform").scrollIntoView({block:"center",behavior:"smooth"});}catch(e){}}
+function readMembers(){document.querySelectorAll("#memberrows .memberrow").forEach((r,i)=>{if(!MEMBERS[i])return;MEMBERS[i].name=r.querySelector(".nm-in").value;MEMBERS[i].email=r.querySelector(".em-in").value;});}
+function renderMembers(focusIdx){const box=document.getElementById("memberrows");
+  box.innerHTML=MEMBERS.map((m,i)=>`<div class="memberrow"><span class="n">${i+1}</span><div><label for="m-name-${i}">Namn</label><input type="text" class="nm-in" id="m-name-${i}" maxlength="60" value="${esc(m.name)}" placeholder="För- och efternamn" autocomplete="off"></div><div class="em"><label for="m-mail-${i}">E-post</label><input type="email" class="em-in" id="m-mail-${i}" maxlength="100" value="${esc(m.email)}" placeholder="namn@exempel.se" autocomplete="off" inputmode="email"></div>${MEMBERS.length>1?`<button type="button" class="xbtn" data-delmember="${i}" aria-label="Ta bort deltagare ${i+1}">✕</button>`:"<span></span>"}</div>`).join("");
+  box.querySelectorAll("[data-delmember]").forEach(b=>b.onclick=()=>{readMembers();MEMBERS.splice(+b.dataset.delmember,1);renderMembers();});
+  box.querySelectorAll("input").forEach(i=>i.addEventListener("input",()=>{i.classList.remove("bad");document.getElementById("membererr").textContent="";}));
+  document.getElementById("addmember").disabled=MEMBERS.length>=6;
+  document.getElementById("membercount").textContent=`${MEMBERS.length} av max 6 deltagare`;
+  if(focusIdx!=null){const el=document.getElementById("m-name-"+focusIdx);if(el)el.focus();}}
+function submitMembers(){readMembers();const err=document.getElementById("membererr");let bad=null;
+  document.querySelectorAll("#memberrows input").forEach(i=>i.classList.remove("bad"));
+  MEMBERS.forEach((m,i)=>{m.name=m.name.trim();m.email=m.email.trim();
+    if(!bad&&!m.name)bad=["m-name-"+i,`Skriv ett namn för deltagare ${i+1}.`];
+    if(!bad&&!EMAIL_RE.test(m.email))bad=["m-mail-"+i,`E-postadressen för deltagare ${i+1} ser inte rätt ut.`];});
+  if(bad){err.textContent=bad[1];const el=document.getElementById(bad[0]);el.classList.add("bad");el.focus();return;}
+  err.textContent="";const team=document.getElementById("teamname").value.trim();
+  S=blank(team,Number(document.getElementById("duration").value),MEMBERS.map(m=>({name:m.name.slice(0,60),email:m.email.slice(0,100)})));
+  MEMBERS=[{name:"",email:""}];document.getElementById("memberform").hidden=true;document.getElementById("startform").hidden=false;save();go();}
+function enterViaDoor(){if(!document.getElementById("memberform").hidden){submitMembers();return;}const n=document.getElementById("teamname");if(n.value.trim()){const f=document.getElementById("startform");if(f.requestSubmit)f.requestSubmit();else f.onsubmit(new Event("submit"));return;}
   const r=document.getElementById("resume");if(!r.hidden){document.getElementById("resumebtn").click();return;}
   n.focus();toast("Skriv ert lagnamn först, sedan öppnas dörren.");}
 function start(){bindHouse(document.querySelector("#v-start .house"));
   const door=document.querySelector("#v-start .house .door");if(door){door.addEventListener("click",enterViaDoor);door.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();enterViaDoor();}});}
   const prev=load();if(prev&&prev.team){document.getElementById("resume").hidden=false;document.getElementById("resumebtn").textContent="Fortsätt som "+prev.team;document.getElementById("resumebtn").onclick=()=>{S=prev;go();};}
-  document.getElementById("startform").onsubmit=e=>{e.preventDefault();const n=document.getElementById("teamname").value.trim();if(!n)return;S=blank(n,Number(document.getElementById("duration").value));save();go();};
+  document.getElementById("startform").onsubmit=e=>{e.preventDefault();const n=document.getElementById("teamname").value.trim();if(!n)return;showMemberStep(n);};
+  document.getElementById("memberform").onsubmit=e=>{e.preventDefault();submitMembers();};
+  document.getElementById("addmember").onclick=()=>{readMembers();if(MEMBERS.length<6){MEMBERS.push({name:"",email:""});renderMembers(MEMBERS.length-1);}};
+  document.getElementById("memberback").onclick=()=>{readMembers();document.getElementById("memberform").hidden=true;document.getElementById("startform").hidden=false;document.getElementById("teamname").focus();};
   document.getElementById("backbtn").onclick=()=>{renderMap();show("map");};
   let endArmed=false;document.getElementById("endbtn").onclick=e=>{if(!endArmed){endArmed=true;e.target.textContent="Säkert? Klicka igen";setTimeout(()=>{endArmed=false;e.target.textContent="Avsluta";},3500);return;}endArmed=false;e.target.textContent="Avsluta";S.ended=true;S.endedBy="self";save();renderResults();show("results");};
   document.getElementById("overlaybtn").onclick=()=>{document.getElementById("overlay").hidden=true;renderResults();show("results");};
@@ -2046,4 +2119,18 @@ route();
     setTimeout(tick,2500+Math.random()*5500);}
   setTimeout(tick,1200+Math.random()*1500);})();
 </script>
+<script>
+/* Haptisk återkoppling på mobil och surfplatta. Ren dekor, rör inte spelets logik.
+   Android: navigator.vibrate. iPhone/iPad (iOS 18+): ett dolt reglage-klick ger systemets lätta haptik. */
+(function(){var touchUntil=0,ios=null;
+  function iosTap(){try{if(!ios){ios=document.createElement("label");ios.className="hapt-switch";ios.setAttribute("aria-hidden","true");var i=document.createElement("input");i.type="checkbox";i.setAttribute("switch","");i.tabIndex=-1;ios.appendChild(i);document.body.appendChild(ios);}ios.click();}catch(e){}}
+  var P={tap:[8],ok:[14,50,22],bad:[45,40,45]};
+  window.__haptic=function(kind,fromToast){if(fromToast&&Date.now()>touchUntil)return;var p=P[kind]||P.tap;
+    if(navigator.vibrate){try{navigator.vibrate(p);}catch(e){}}else{iosTap();if(kind!=="tap")setTimeout(iosTap,90);}};
+  document.addEventListener("pointerdown",function(e){if(e.pointerType!=="touch"&&e.pointerType!=="pen")return;touchUntil=Date.now()+4000;
+    var el=e.target.closest&&e.target.closest("button:not([disabled]),.opt,.roomcard,.step,.tcard,.tcol,.cmpcard,.hs,.house .win,.house .door,select,[data-dismiss]");
+    if(el)window.__haptic("tap");},{passive:true,capture:true});
+})();
+</script>
+
 
