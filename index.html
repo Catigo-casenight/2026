@@ -77,8 +77,15 @@ p{margin:0}
 button{font:inherit;color:inherit;cursor:pointer}
 :focus-visible{outline:2px solid var(--mandarin);outline-offset:2px}
 @media (prefers-reduced-motion:no-preference){
-  .hero h1,#room-title,#res-team{animation:flick 9s steps(1) infinite}
-  @keyframes flick{0%,100%{opacity:1}71%{opacity:.82}71.6%{opacity:1}72.2%{opacity:.7}72.8%{opacity:1}}
+  /* slumpat flimmer: klasserna sätts av ett litet skript längst ned (rör inte spelets logik) */
+  .flk1{animation:flk1 .75s steps(1) 1}
+  .flk2{animation:flk2 1.2s steps(1) 1}
+  .flk3{animation:flk3 1.6s ease-out 1}
+  .flk4{animation:flk4 .5s steps(1) 1}
+  @keyframes flk1{0%{opacity:1}8%{opacity:.2}16%{opacity:1}28%{opacity:.35}36%{opacity:1}}
+  @keyframes flk2{0%{opacity:1}6%{opacity:.3;transform:translateX(1px)}12%{opacity:1;transform:none}40%{opacity:.15}46%{opacity:.9}52%{opacity:.25}60%{opacity:1}}
+  @keyframes flk3{0%{opacity:1}10%{opacity:.12;filter:blur(.6px)}55%{opacity:.18;filter:blur(.4px)}62%{opacity:.75}70%{opacity:.3}100%{opacity:1;filter:none}}
+  @keyframes flk4{0%{opacity:1}20%{opacity:.25}40%{opacity:1}}
 }
 
 /* ---------- buttons: brytare & stämplar ---------- */
@@ -1817,3 +1824,15 @@ function go(){hud();tick();if(locked()){renderResults();show("results");}else{re
 start();
 route();
 </script>
+<script>
+/* Slumpat flimmer i rubrikerna, ren dekor. Avstängt vid reducerad rörelse. */
+(function(){try{if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;}catch(e){}
+  var SEL=["#v-start .hero h1","#v-start .hero h1 .o","#v-start .hero h1 .o","#v-map h2","#room-title","#res-team"],CL=["flk1","flk2","flk3","flk4"];
+  function flick(el){var c=CL[Math.floor(Math.random()*CL.length)];CL.forEach(function(x){el.classList.remove(x);});void el.offsetWidth;el.classList.add(c);setTimeout(function(){el.classList.remove(c);},1700);}
+  function tick(){var vis=SEL.map(function(s){return document.querySelector(s);}).filter(function(el){return el&&el.offsetParent!==null;});
+    if(vis.length){flick(vis[Math.floor(Math.random()*vis.length)]);
+      if(Math.random()<.25){var el2=vis[Math.floor(Math.random()*vis.length)];setTimeout(function(){flick(el2);},250+Math.random()*500);}}
+    setTimeout(tick,2500+Math.random()*5500);}
+  setTimeout(tick,1200+Math.random()*1500);})();
+</script>
+
